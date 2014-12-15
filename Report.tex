@@ -1,0 +1,124 @@
+\documentclass[a4paper]{article}        % Standaard een kolom layout
+\usepackage[english]{babel}               % Stel woordafbrekingen en referentienamen in
+\usepackage{graphicx}                   % Afbeeldingen weergeven
+\usepackage{float}                      % Figuren op plaats waar ze gedefinieerd staan: [H]
+\usepackage{lmodern}                    % Gebruik modern lettertype
+\usepackage[T1]{fontenc}
+\usepackage[hidelinks]{hyperref}        % Referenties aanklikbaar in PDF, geen kaders rond weergeven
+\usepackage[margin=1.5in]{geometry}
+\usepackage[binary-units,per-mode=symbol]{siunitx}                    % SI unit symbolen
+\usepackage{amsmath}                    % Matrices en vergelijkingen
+\usepackage{subcaption}                 % Subfiguren
+\usepackage{tabularx}
+\usepackage[parfill]{parskip}
+\DeclareSIUnit\dbm{\decibel{}m}         % Voeg dBm toe als eenheid
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage{csvsimple}
+\usepackage{hyperref}
+\usepackage{natbib}
+
+
+\title{High Frequency Design: \\ Design of an RF front-end for a GPS receiver}
+\author{Thomas Deckmyn}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\section{Circuit Design}
+	\subsection{LNA}
+	The design of the LNA first requires a choice of topology. A common emittor toplogy is the best choice in this case, because it yields the highest power gain and has a moderate input and output impedance, hence it can easily be matched to a $\SI{50}{\ohm}$ system.
+		\subsubsection{DC Operating Point}
+			When determining the DC operating point for the BFP740 transistor a trade-off has to be made between minimal NF and maximum linearity. Based on the characteristics found in the datasheet\cite{transdatasheet} of the transistor we choose $V_{CE} = \SI{4}{\volt}$ and $I_C = \SI{20}{\milli\ampere}$ to obtain the highest possible linearity, i.e. $IP3 = \SI{27}{\dbm} $. For $I_C = \SI{20}{\milli\ampere}$ the NF is $\SI{0.7}{\decibel}$, which still leaves a lot of margin to stay below the specified NF of $\SI{1.5}{\decibel}$. From the datasheet we know that $\beta = 300$, which yields $I_B = \frac{I_C}{\beta} = \SI{66}{\micro\ampere}$, hence the circuit shown in Figure \ref{fig:lna_ce} can be constructed. DC blocking capacitor are added as not to interrupt the DC operating point of the transistor. The DC feed ensures DC current where needed and prevents RF current from entering the DC voltage source. \\
+
+			\begin{figure}[H]
+			\centering
+				\includegraphics[width=0.8\textwidth]{fig/LNA/LNA_start.pdf}
+			\caption{Common emitter topology}
+			\label{fig:lna_ce}
+			\end{figure}
+
+			To enable the $\SI{5}{\volt}$ supply the DC feed can be replaced by a resistor, which will lower the collecor emittor voltage. We want $I_C$ to still be $\SI{20}{\milli\ampere}$ and $V_{CE}$ $\SI{4}{\volt}$. This means we need a $\SI{1}{\volt}$ voltage drop over the resistor and $\SI{20}{\milli\ampere}$ going through it, hence $R = \frac{V}{I} = \SI{50}{\ohm}$. We obtain the circuit in Figure \ref{fig:lna_5V}.
+
+			\begin{figure}[H]
+			\centering
+				\includegraphics[width=0.8\textwidth]{fig/LNA/LNA_5V.pdf}
+			\caption{DC feed replaced with resistor enabling 5V supply}
+			\label{fig:lna_5V}
+			\end{figure}
+
+		\subsubsection{Stability}
+			To decide wether the amplifier is stable, we draw the input and output stability circles. We know that in the center of the Smith Chart $\Gamma_{in} = |S_{11}] < 1$ and $\Gamma_{out} = |S_{22}| < 1$, hence if the stability circles do not intersect with the unity circle the amplifier is stable for all possible passive terminations at the design frequency.\cite{pozar} The value of the stability resistor(s) tunes diameter and position of the stability circle, hence stability can be obtained by tuning the resistor(s).\\
+
+			 To obtain a stable amplifier there a few choices that can be made concerning the position of the stability resistor, i.e. shunt or series at input or output, or a combination of multiple resistors. As we are designing a low noise amplifier a series resistor at the input would be a bad choice, as this would increase the NF considerably. To stabilize the amplifier with solely a shunt resistance at the input a very high resistance is needed (order of $\SI{100}{\kilo\ohm}$), which would put non realisable constraints on the matching network. After analyzing the two remaining options and combinations, we conclude that best performance with respect to NF and gain is achieved with a series resistance at the output and a shunt resistance at the input. The realized stabilization circuit can be seen in Figure \ref{fig:lna_stable}.
+
+			 \begin{figure}[H]
+				\centering
+				\includegraphics[width=0.8\textwidth]{fig/LNA/LNA_stable.pdf}
+				\caption{Circuit for LNA with added stabilization resistors}
+				\label{fig:lna_stable}
+			\end{figure}
+
+		\subsubsection{Gain and Noise Matching and Biasing}
+
+			What is still left to do is selecting the load and source reflection coefficients. For this we draw constant gain circles in the output plane and constant noise circles in the input plane. Next, we choose the load reflection coefficient $\Gamma_L$ in such a way that the source reflection coefficient $\Gamma_S$ is within the constant noise circle of $\SI{1.5}{\decibel}$ as specified. To achieve a NF that is below $\SI{1.5}{\decibel}$ we will need to sacrifice gain at the output, as can be seen in Figure \ref{fig:lna_circles}. The load reflection $\Gamma_L$ is chosen on the $\SI{20}{\decibel}$ gain circle and then the source reflection $\Gamma_S$ is within the $\SI{1.5}{\decibel}$ noise circle. \\
+
+			First, the output is matched such that $\Gamma_L$ is located at $Z_0 (0.645 + j 0.109)$ on the Smith Chart, which will reduce the gain to $\SI{20}{\decibel}$, but the NF will be within the specifications. Second, the input impedance is matched to $\SI{50}{\ohm}$. The matching is performed using the Smith Chart Tool in ADS and both networks consist of a piece of transmission line and a capacitor. The circuit with the added matching networks is shown in Figure \ref{fig:lna_pre_layout}. The DC blocks can be omitted as the capacitors of the matching network now act as DC blocks. 
+
+			\begin{figure}[H]
+			\begin{subfigure}{0.5\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{fig/LNA/LNA_gain_circle.pdf}
+			\end{subfigure}
+			\begin{subfigure}{0.5\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{fig/LNA/LNA_noise_circle.pdf}
+			\end{subfigure}
+				\caption{Constant Noise and Gain circles for matching}
+				\label{fig:lna_circles}
+			\end{figure}
+
+			The next step is to replace the ideal base current source by a biasing network. This biasing network will induce negative feedback and thus ensure stability. The voltage drop over the resistor will be $V_{CE} - \SI{0.7}{\volt} = \SI{3.3}{\volt}$ and the current needs to be $\SI{66}{\micro\ampere}$, hence $R = \SI{50}{\kilo\ohm}$. After tuning for best performance, we obtain the circuit shown in Figure \ref{fig:lna_pre_layout}.
+
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\textwidth]{fig/LNA/LNA_matched.pdf}
+			\caption{Realized circuit after matching and biasing}
+			\label{fig:lna_pre_layout}
+			\end{figure} 
+
+		\subsubsection{Gain and Noise Linearity}
+
+			To obtain the 1dB Compression Point large signal S-parameters need to be simulated. The difference between the simulated gain characteristic and the ideal (linear) gain characteristic is plotted as a function of the input power in Figure \ref{fig:lna_1dbcp}. We see that the 1-dBCP is reached for an input power equal to $\SI{-15.5}{\dbm}$. We also know that the gain of the amplifier is $\SI{20}{\decibel}$, hence we get an output referred 1-dBCP of $\SI{4.5}{\dbm}$ which is within the specifications. To increase the linearity further, we added inductive emittor degeneration with an inductor of $\SI{100}{\pico\henry}$. This will not be a physical component, but the inductance will be present due to the vias to the ground plane. 
+
+			\begin{figure}[H]
+			\centering
+				\includegraphics[width=0.5\textwidth]{fig/LNA/compression_point.pdf}
+			\caption{Simulated 1 dB Compression Point}
+			\label{fig:lna_1dbcp}
+			\end{figure}
+
+		\subsubsection{Layout Friendly Schematic}
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=\textwidth]{fig/LNA/layout_friendly_schematic.pdf}
+			\end{figure}
+
+	\subsection{Filter}
+
+\section{Layout}
+	\subsection{LNA}
+
+	\subsection{Filter}
+\section{Results}
+	\subsection{LNA}
+
+	\subsection{Filter}
+\section{Conclusion}
+
+\section{Further improvements}
+
+\bibliographystyle{plain}
+\bibliography{bookref}
+\end{document}
