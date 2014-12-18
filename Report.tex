@@ -112,7 +112,10 @@
 			\end{figure}
 
 		\subsubsection{Figure of Merrit}
+			We want the LNA to be as linear as possible, but the DC power consumption needs to be kept as low as possible. That's why we will use the ratio $\frac{OIP3}{P_{DC}}$ as a figure of merrit (FOM), with $OIP3$ the Output Referred Third Order Intercept Point and $P_{DC}$ the DC power consumption. The higher the FOM, the higher the linearity of the amplifier and the lower the power consumption. \\
 
+			To calculate OIP3 we perfom a Harmonic Balance simulation in ADS, i.e. we send two tones into the circuit and observe the third order mixing products. Figure \ref{fig:lna_fom} shows these third order products and their output referred intercept point in the table below the figure. 
+			
 			\begin{figure}[H]
 				\centering
 				\includegraphics[width=0.5\textwidth]{fig/LNA/fom.pdf}
