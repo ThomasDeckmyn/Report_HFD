@@ -28,6 +28,8 @@
 \section{Introduction}
 \section{Circuit Design}
 	\subsection{LNA}
+
+	\textbf{Misschien specificaties nog eens oplijsten?}\\\\
 	The design of the LNA first requires a choice of topology. A common emittor toplogy is the best choice in this case, because it yields the highest power gain and has a moderate input and output impedance, hence it can easily be matched to a $\SI{50}{\ohm}$ system.
 		\subsubsection{DC Operating Point}
 			When determining the DC operating point for the BFP740 transistor a trade-off has to be made between minimal NF and maximum linearity. Based on the characteristics found in the datasheet\cite{transdatasheet} of the transistor we choose $V_{CE} = \SI{4}{\volt}$ and $I_C = \SI{20}{\milli\ampere}$ to obtain the highest possible linearity, i.e. $IP3 = \SI{27}{\dbm} $. For $I_C = \SI{20}{\milli\ampere}$ the NF is $\SI{0.7}{\decibel}$, which still leaves a lot of margin to stay below the specified NF of $\SI{1.5}{\decibel}$. From the datasheet we know that $\beta = 300$, which yields $I_B = \frac{I_C}{\beta} = \SI{66}{\micro\ampere}$, hence the circuit shown in Figure \ref{fig:lna_ce} can be constructed. DC blocking capacitor are added as not to interrupt the DC operating point of the transistor. The DC feed ensures DC current where needed and prevents RF current from entering the DC voltage source. \\
@@ -61,6 +63,7 @@
 			\end{figure}
 
 		\subsubsection{Gain and Noise Matching and Biasing}
+		\label{sec:lna_matching}
 
 			What is still left to do is selecting the load and source reflection coefficients. For this we draw constant gain circles in the output plane and constant noise circles in the input plane. Next, we choose the load reflection coefficient $\Gamma_L$ in such a way that the source reflection coefficient $\Gamma_S$ is within the constant noise circle of $\SI{1.5}{\decibel}$ as specified. To achieve a NF that is below $\SI{1.5}{\decibel}$ we will need to sacrifice gain at the output, as can be seen in Figure \ref{fig:lna_circles}. The load reflection $\Gamma_L$ is chosen on the $\SI{20}{\decibel}$ gain circle and then the source reflection $\Gamma_S$ is within the $\SI{1.5}{\decibel}$ noise circle. \\
 
@@ -83,10 +86,19 @@
 
 			\begin{figure}[H]
 				\centering
-				\includegraphics[width=\textwidth]{fig/LNA/LNA_matched.pdf}
+				\includegraphics[width=0.8\textwidth]{fig/LNA/LNA_matched.pdf}
 			\caption{Realized circuit after matching and biasing}
 			\label{fig:lna_pre_layout}
 			\end{figure} 
+
+			The Smith Chart in Figure \ref{fig:lna_matching_smith} shows that the input is perfectly matched to $\SI{50}{\ohm}$ after adding the matching networks from Figure \ref{fig:lna_pre_layout}. The output is on purpose mismatched to obtain a NF that is smaller than $\SI{1.5}{\decibel}$ (see \ref{sec:lna_matching}).
+
+			\begin{figure}[H]
+			\centering
+				\includegraphics[width=0.5\textwidth]{fig/LNA/matching_smith.pdf}
+			\caption{Smith Chart after adding matching network}
+			\label{fig:lna_matching_smith}
+			\end{figure}
 
 		\subsubsection{Gain and Noise Linearity}
 
@@ -99,16 +111,54 @@
 			\label{fig:lna_1dbcp}
 			\end{figure}
 
-		\subsubsection{Layout Friendly Schematic}
+		\subsubsection{Figure of Merrit}
+
 			\begin{figure}[H]
 				\centering
-				\includegraphics[width=\textwidth]{fig/LNA/layout_friendly_schematic.pdf}
+				\includegraphics[width=0.5\textwidth]{fig/LNA/fom.pdf}
+				\caption{Figure of Merrit}
+				\label{fig:lna_fom}
 			\end{figure}
 
+		\subsubsection{Summary}
+			Table \ref{tab:lna_summ} gives an overview of the simulated design parameters compared with the specifications. It can be seen that in this stage of the design all specifications are still met.  
+
+			\begin{table}[H]
+			\centering
+			\begin{tabular}{|l|r|r|}
+				\hline
+				 & \textbf{Realized} & \textbf{Specs} \\
+				\hline
+				\textbf{SS Gain} & 20 dB & $>$ 16 dB \\
+				\hline
+				\textbf{NF} & 1.196 dB & $\leq$ 1.5 dB \\
+				\hline
+				\textbf{Output ref. 1dBCP} & 4.5 dBm & $>$ 3 dBm \\
+				\hline
+				\textbf{FOM} & 0.33 & n/a \\
+				\hline
+			\end{tabular}
+			\caption{Summarizing achieved specs}
+			\label{tab:lna_summ}
+			\end{table}
+
+		
 	\subsection{Filter}
 
 \section{Layout}
 	\subsection{LNA}
+		\subsubsection{Generation of Layout}
+			Before generating a layout for the designed LNA circuit, the schematic is made layout friendly. This means the nets in the schematic are replaced by transmission line segments with appropriate impedance, pads for the discrete components are added and discontinuities in microstrip line thickness are modeled in the schematic. After generating a layout from the schematic ground planes are added and vias are placed to connect to the underlying ground plane. A plane for the DC supply voltage is added as well and is placed close to the ground plane for decoupling of the supply voltage, i.e. the small gap acts as a decoupling capacitance. The resulting layout is shown in Figure \ref{fig:lna_layout}. All traces have a width according to an impedance of $\SI{50}{\ohm}$ except for the transmission line in the matching network at the input, which is $\SI{75}{\ohm}$ to reduce the length of the line, and the trace between collector and base as only DC-current flows there. 
+
+			\begin{figure}[H]
+			\centering
+				\includegraphics[width=\textwidth]{fig/LNA/LNA_layout.pdf}
+				\caption{Generated layout with added ground and source planes}
+				\label{fig:lna_layout}
+			\end{figure}
+
+		\subsubsection{EM-model Simulations}
+			In this step of the design Momentum (full wave) simulations are performed on the drawn layout and an EM-model is generated. This model contains information on transmission line effects, radiation losses, copper losses etc. and can be used to conduct further simulations to better predict the performance of the fabricated device and investigate the differences with the schematic. 
 
 	\subsection{Filter}
 \section{Results}
