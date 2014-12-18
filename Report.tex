@@ -158,7 +158,47 @@
 			\end{figure}
 
 		\subsubsection{EM-model Simulations}
-			In this step of the design Momentum (full wave) simulations are performed on the drawn layout and an EM-model is generated. This model contains information on transmission line effects, radiation losses, copper losses etc. and can be used to conduct further simulations to better predict the performance of the fabricated device and investigate the differences with the schematic. 
+			In this step of the design Momentum (full wave) simulations are performed on the drawn layout and an EM-model is generated. This model contains information on transmission line effects, radiation losses, copper losses etc. and can be used to conduct further simulations to better predict the performance of the fabricated device and investigate the differences with the schematic. \\
+
+			The Smith Chart in Figure \ref{fig:lna_smith_post} shows that with inclusion of the EM-model there is a very small mismatch at the input, but the $S_{11}$ is $\SI{-22}{\decibel}$ which is very much acceptable.
+
+			\begin{figure}[H]
+			\centering
+				\includegraphics[width=0.5\textwidth]{fig/LNA/matching_post.pdf}
+			\caption{Smith Chart with EM-model}
+			\label{fig:lna_smith_post}
+			\end{figure}
+
+			If we look at the 1-dBCP in Figure \ref{fig:lna_1db_post} we see that the input referred 1-dBCP has increased with $\SI{1}{\dbm}$, but the gain has dropped with approximately the same amount. We get an output referred 1-dBCP of $\SI{4.37}{\dbm}$, which is very close to the value obtained with the schematic ($\SI{4.5}{\dbm}$). 
+
+			\begin{figure}[H]
+			\centering
+				\includegraphics[width=0.5\textwidth]{fig/LNA/compression_post.pdf}
+			\caption{1 dB Compression Point with EM-model}
+			\label{fig:lna_1db_post}
+			\end{figure}
+
+		\subsubsection{Summary}
+
+			\begin{table}[H]
+			\centering
+			\begin{tabular}{|l|r|r|r|}
+				\hline
+				 &  \textbf{EM-model} &  \textbf{Schematic} & \textbf{Specs} \\
+				\hline
+				\textbf{SS Gain} & 18.87 dB &  20 dB & $>$ 16 dB \\
+				\hline
+				\textbf{NF} & 1.412 dB & 1.196 dB & $\leq$ 1.5 dB \\
+				\hline
+				\textbf{Output ref. 1dBCP} & 4.37 dBm & 4.5 dBm & $>$ 3 dBm \\
+				\hline
+				\textbf{FOM} & 0.503 & 0.33 & n/a \\
+				\hline
+			\end{tabular}
+			\caption{Summarizing achieved specs after EM-model simulation}
+			\label{tab:lna_em_summ}
+			\end{table}
+
 
 	\subsection{Filter}
 \section{Results}
