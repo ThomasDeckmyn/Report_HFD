@@ -32,5 +32,6 @@
 *.tdo
 *.pdf
 !fig/**/*.pdf
+fig/**/*-eps-converted-to.pdf
 *.m~
 *.asv

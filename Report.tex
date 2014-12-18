@@ -20,10 +20,12 @@
 
 
 \title{High Frequency Design: \\ Design of an RF front-end for a GPS receiver}
-\author{Thomas Deckmyn}
+\author{Thomas Deckmyn \& Zeger Van de Vannet}
 \date{\today}
 \begin{document}
 \maketitle
+
+\tableofcontents
 
 \section{Introduction}
 \section{Circuit Design}
@@ -195,7 +197,7 @@
 				\hline
 				\textbf{Output ref. 1dBCP} & 4.37 dBm & 4.5 dBm & $>$ 3 dBm \\
 				\hline
-				\textbf{FOM} & 0.503 & 0.33 & n/a \\
+				\textbf{FOM} & 0.503 & 0.33 & Max. \\
 				\hline
 			\end{tabular}
 			\caption{Summarizing achieved specs after EM-model simulation}
@@ -206,6 +208,42 @@
 	\subsection{Filter}
 \section{Results}
 	\subsection{LNA}
+  \subsubsection{S-Parameters}
+  \label{sub:sparams}
+  We start by measuring the $S_{11}$ and $S_{21}$ and compare with the simulations.
+  \autoref{fig:lna_meas_s21} shows a final gain of $\SI{19.45}{\dbm}$ at the central frequency of $\SI{1575.42}{\mega\hertz}$, which is in line with the simulation results in \autoref{tab:lna_em_summ}.
+  Also, the $\SI{-10}{\decibel}$ bandwidth is well over the specified $\SI{2.046}{\mega\hertz}$, as \autoref{fig:lna_meas_s11} indicates.
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{fig/LNA/s11_lna.eps}
+      \caption{Reflection}
+      \label{fig:lna_meas_s11}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{fig/LNA/s21_lna.eps}
+      \caption{Insertion Loss}
+      \label{fig:lna_meas_s21}
+    \end{subfigure}
+    \caption{Measured S-parameters of the LNA}
+    \label{fig:lna_meas_sparam}
+  \end{figure}
+  \subsubsection{$\SI{1}{\decibel}$ Compression Point}
+  In order to find the $\SI{1}{\decibel}$ compression point, the output power is measured as a function of the input power, and plotted on \autoref{fig:lna_meas_cp}.
+  A curve is fitted to the initial linear part, and the vertical black line indicates the point where the difference between the fitted and measured curve exceeds $\SI{1}{\decibel}$.
+  For the tested LNA this point is at an input power of $\SI{-14}{\dbm}$ and given the gain measured in \autoref{sub:sparams}, this results in an output-referred $\SI{1}{\decibel}$ compression point of $\SI{5.45}{\dbm}$.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/LNA/compression_lna.eps}
+    \caption{Output vs. Input Power}
+    \label{fig:lna_meas_cp}
+  \end{figure}
+
+  % TODO: Questions from TutorialRFMeasurements
+
 
 	\subsection{Filter}
 \section{Conclusion}
