@@ -281,10 +281,31 @@
   A lower OIP3 would suggest a lower linearity than expected, however the $\SI{1}{\decibel}$ compression point is actually higher than the simulations would indicate.
 
 	\subsection{Filter}
+  \autoref{fig:filter_meas_s21} displays the insertion loss of the filter. While we can see that the lowest GSM-1800 frequency of $\SI{1710}{\mega\hertz}$ is attenuated sufficiently, the passband has slightly too much loss.
+  The $\SI{-10}{\decibel} S_{11}$ is $\SI{50}{\mega\hertz}$ and thus well over the required specifications. 
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{fig/Filter/s11_filter.eps}
+      \caption{Reflection}
+      \label{filter_meas_s11}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{fig/Filter/s21_filter.eps}
+      \caption{Insertion Loss}
+      \label{fig:filter_meas_s21}
+    \end{subfigure}
+    \caption{Measured S-parameters for the filter}
+    \label{fig:filter_meas_sparams}
+  \end{figure}
+
+  The board measures approx. $\SI{1}{\centi\meter}$ by $\SI{9}{\centi\meter}$, yielding a surface of $\SI{9}{\centi\meter\squared}$.
   \subsection{Complete System}
   In order to test the complete system, the filter is placed in front of the LNA, and two tones are injected into the system: one at $\SI{1575.42}{\mega\hertz}$ (i.e.\ the desired signal) and one at $\SI{1710}{\mega\hertz}$ (i.e.\ the disturbance).  
   Both signals have a power of $\SI{-30}{\dbm}$ and the combination of cables and connectors used in the set-up has a loss of approx. $\SI{7}{\dbm}$.
-  \autoref{fig:complete_system} shows the GPS signal with an overall amplification of approx. $\SI{15.57}{\decibel}$ ( $\SI{-21.43}{\dbm}$ - $\SI{-30}{\dbm}$ - $\SI{-7}{\decibel}$ ). This is lower than the LNA gain, as there is attenuation from the filter.
+  \autoref{fig:complete_system} shows the GPS signal with an overall amplification of approx. $\SI{15.57}{\decibel}$ ($\SI{-21.43}{\dbm}$ - $\SI{-30}{\dbm}$ - $\SI{-7}{\decibel}$). This is lower than the LNA gain, as there is attenuation from the filter.
   The GSM-disturbance signal is suppressed by approx. $\SI{5.6}{\decibel}$, and is $\SI{21.17}{\decibel}$ smaller than the desired signal, hence we can conclude the system has suppressed the disturbance sufficiently.
   \begin{figure}[H]
     \centering
