@@ -149,11 +149,22 @@
 
 		
 	\subsection{Filter}
+  To remove as much noise and unwanted signals as possible, a filter will be placed in front of the LNA. This filter should of course pass the desired GPS signal and block the nearby GSM-1800 frequencies, of which the closest is $\SI{1710}{\mega\hertz}$.
+  \subsubsection{Prototype}
+  In order to design the filter, we start from a $2^{nd}$ order elliptic prototype. This filter consists of one capacitor and one inductor with an equal nominal value of $\sqrt{2}$.  It is matched to $\SI{1}{\ohm}$ ports and has a lowpass characteristic with a cut-off frequency of $\SI{1}{\hertz}$.
+  The prototype is transformed into a bandpass filter using following transformations:
+  \begin{eqnarray*}
+    C_p &=& \frac{C}{Z_0 \omega_0 \Delta f}\\
+    L_p &=& \frac{Z_0 \Delta f}{C \omega_0}\\
+    L_s &=& \frac{L Z_0}{\omega_0 \Delta f}\\
+    C_s &=& \frac{\Delta f}{L Z_0 \omega_0}
+  \end{eqnarray*}
+  Here $\Delta f$ is given by $\frac{BW}{f_0}$. We set the bandwidth to $\SI{50}{\mega\hertz}$ as we found out that in later iterations the bandwidth has the tendency to decrease.
 
 \section{Layout}
 	\subsection{LNA}
 		\subsubsection{Generation of Layout}
-			Before generating a layout for the designed LNA circuit, the schematic is made layout friendly. This means the nets in the schematic are replaced by transmission line segments with appropriate impedance, pads for the discrete components are added and discontinuities in microstrip line thickness are modeled in the schematic. After generating a layout from the schematic ground planes are added and vias are placed to connect to the underlying ground plane. A plane for the DC supply voltage is added as well and is placed close to the ground plane for decoupling of the supply voltage, i.e. the small gap acts as a decoupling capacitance. The resulting layout is shown in Figure \ref{fig:lna_layout}. All traces have a width according to an impedance of $\SI{50}{\ohm}$ except for the transmission line in the matching network at the input, which is $\SI{75}{\ohm}$ to reduce the length of the line, and the trace between collector and base as only DC-current flows there. 
+			Before generating a layout for the designed LNA circuit, the schematic is made layout friendly. This means the nets in the schematic are replaced by transmission line segments with appropriate impedance, pads for the discrete components are added and discontinuities in microstrip line thickness are modelled in the schematic. After generating a layout from the schematic ground planes are added and vias are placed to connect to the underlying ground plane. A plane for the DC supply voltage is added as well and is placed close to the ground plane for decoupling of the supply voltage, i.e. the small gap acts as a decoupling capacitance. The resulting layout is shown in Figure \ref{fig:lna_layout}. All traces have a width according to an impedance of $\SI{50}{\ohm}$ except for the transmission line in the matching network at the input, which is $\SI{75}{\ohm}$ to reduce the length of the line, and the trace between collector and base as only DC-current flows there. 
 
 			\begin{figure}[H]
 			\centering
