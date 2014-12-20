@@ -113,15 +113,15 @@
 			\label{fig:lna_1dbcp}
 			\end{figure}
 
-		\subsubsection{Figure of Merrit}
-			We want the LNA to be as linear as possible, but the DC power consumption needs to be kept as low as possible. That's why we will use the ratio $\frac{OIP3}{P_{DC}}$ as a figure of merrit (FOM), with $OIP3$ the Output Referred Third Order Intercept Point and $P_{DC}$ the DC power consumption. The higher the FOM, the higher the linearity of the amplifier and the lower the power consumption. \\
+		\subsubsection{Figure of merit}
+			We want the LNA to be as linear as possible, but the DC power consumption needs to be kept as low as possible. That's why we will use the ratio $\frac{OIP3}{P_{DC}}$ as a figure of merit (FOM), with $OIP3$ the Output Referred Third Order Intercept Point and $P_{DC}$ the DC power consumption. The higher the FOM, the higher the linearity of the amplifier and the lower the power consumption. \\
 
 			To calculate OIP3 we perfom a Harmonic Balance simulation in ADS, i.e. we send two tones into the circuit and observe the third order mixing products. Figure \ref{fig:lna_fom} shows these third order products and their output referred intercept point in the table below the figure. 
 			
 			\begin{figure}[H]
 				\centering
 				\includegraphics[width=0.5\textwidth]{fig/LNA/fom.pdf}
-				\caption{Figure of Merrit}
+				\caption{Figure of merit}
 				\label{fig:lna_fom}
 			\end{figure}
 
@@ -233,7 +233,7 @@
   \subsubsection{$\SI{1}{\decibel}$ Compression Point}
   In order to find the $\SI{1}{\decibel}$ compression point, the output power is measured as a function of the input power, and plotted on \autoref{fig:lna_meas_cp}.
   A curve is fitted to the initial linear part, and the vertical black line indicates the point where the difference between the fitted and measured curve exceeds $\SI{1}{\decibel}$.
-  For the tested LNA this point is at an input power of $\SI{-14}{\dbm}$ and given the gain measured in \autoref{sub:sparams}, this results in an output-referred $\SI{1}{\decibel}$ compression point of $\SI{5.45}{\dbm}$.
+  For the tested LNA, this point is at an input power of $\SI{-14}{\dbm}$ and given the gain measured in \autoref{sub:sparams}, this results in an output-referred $\SI{1}{\decibel}$ compression point of $\SI{5.45}{\dbm}$.
 
   \begin{figure}[H]
     \centering
@@ -245,6 +245,10 @@
   % TODO: Questions from TutorialRFMeasurements
   
   \subsubsection{Harmonic Distortion}
+  The test set-up to measure the harmonic distortion consists of two signal generators: one set to $\SI{1575.40}{\mega\hertz}$ (IM-) and the other set to $\SI{1575.44}{\mega\hertz}$ (IM+).
+  These inputs will create $3^{rd}$ order intermodulation products at $\SI{1575.36}{\mega\hertz}$ and $\SI{1575.48}{\mega\hertz}$.
+  The output power at these four frequencies is then measured for varying input powers, and the lowside and highside measurements are shown in \autoref{fig:lna_meas_im_low} and \autoref{fig:lna_meas_im_high} respectively.
+  Once again, lines are fitted to the linear section of the measurements (i.e.\ for input powers \textless $\SI{-14}{\dbm}$).
 
   \begin{figure}[H]
     \centering
@@ -258,13 +262,36 @@
       \centering
       \includegraphics[width=\textwidth]{fig/LNA/im_high.eps}
       \caption{Highside Intermodulation Products}
-      \label{fig:lna_meas_im_hight}
+      \label{fig:lna_meas_im_high}
     \end{subfigure}
     \caption{Measurements for Intermodulation Products}
     \label{fig:lna_meas_im}
   \end{figure}
 
+  In \autoref{fig:lna_meas_im} the vertical lines indicate the intercept points. The OIP3 is found by simply reading the value of the ordinate in both plots. For the final OIP3 we choose the average of both, namely $\SI{6.03}{\dbm}$.
+
+  \subsubsection{Noise}
+  To measure the noise, we choose to use the noise figure meter, as it is the most accurate for low noise figures ($\le$ $\SI{2}{\decibel}$).
+  We measured a value of $\SI{1.22}{\decibel}$, which is perfectly in line with the simulation result of $\SI{1.196}{\decibel}$ in \autoref{tab:lna_summ} and even better than the EM-simulation result.
+
+  \subsubsection{Figure of merit}
+  Finally we measure the power usage of the LNA: at $\SI{5}{\volt}$, a current of $\SI{13}{\milli\ampere}$ is drawn from the power supply, yielding a power consumption of $\SI{65}{\milli\watt}$.
+  Combining this value with the OIP3 measured earlier, we find a figure of merit of $0.06$, a value much lower than would be expected from simulation.
+  One explanation for this would be the lower intercept point: $\SI{6.03}{\dbm}$ vs. $\SI{16.27}{\dbm}$ from simulation.
+  A lower OIP3 would suggest a lower linearity than expected, however the $\SI{1}{\decibel}$ compression point is actually higher than the simulations would indicate.
+
 	\subsection{Filter}
+  \subsection{Complete System}
+  In order to test the complete system, the filter is placed in front of the LNA, and two tones are injected into the system: one at $\SI{1575.42}{\mega\hertz}$ (i.e.\ the desired signal) and one at $\SI{1710}{\mega\hertz}$ (i.e.\ the disturbance).  
+  Both signals have a power of $\SI{-30}{\dbm}$ and the combination of cables and connectors used in the set-up has a loss of approx. $\SI{7}{\dbm}$.
+  \autoref{fig:complete_system} shows the GPS signal with an overall amplification of approx. $\SI{15.57}{\decibel}$ ( $\SI{-21.43}{\dbm}$ - $\SI{-30}{\dbm}$ - $\SI{-7}{\decibel}$ ). This is lower than the LNA gain, as there is attenuation from the filter.
+  The GSM-disturbance signal is suppressed by approx. $\SI{5.6}{\decibel}$, and is $\SI{21.17}{\decibel}$ smaller than the desired signal, hence we can conclude the system has suppressed the disturbance sufficiently.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/Filter/spectrum_system.eps}
+    \caption{Spectrum of complete system}
+    \label{fig:complete_system}
+  \end{figure}
 \section{Conclusion}
 
 \section{Further improvements}
