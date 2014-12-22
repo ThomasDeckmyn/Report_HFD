@@ -483,7 +483,9 @@
 	\subsection{Filter}
 		A first improvement to the filter would be to decrease the bandwidth. The specifications state that a bandwidth of $\SI{2}{\mega\hertz}$ is needed, but we achieved $\SI{50}{\mega\hertz}$, which is well overdimensioned. As there always is a trade off between bandwidth and noise, a smaller bandwidth would be better for noise considerations. \\
 
-		Secondly, as the area of the filter is used as a FOM, it could be made smaller by folding the coupled lines. 
+		Secondly, the attenuation in the passband could be improved, as it is the only specification that hasn't been met: $\SI{2.5}{\decibel}$ instead of the desired maximum of $\SI{2}{\decibel}$. This could be done by decreasing the attenuation even further in the simulation by means of shorter transmission lines or smaller gaps between the TLs, as this will result in more coupling, while still meeting the other specifications. Hence, it will be a complicated optimization. \\
+
+		Thirdly, as the area of the filter is used as a FOM, it could be made smaller by folding the coupled lines. 
 
 \bibliographystyle{plain}
 \bibliography{bookref}
