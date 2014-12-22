@@ -213,10 +213,16 @@
     \omega_{res} &=& \frac{1}{\sqrt{C_s L_s}}
   \end{eqnarray*}
 
-  The solution of these equations yields an impossibly high impedance and we rescale these impedances to $\SI{50}{\ohm}$. To this end the $\SI{50}{\ohm}$ sections of $\SI{90}{\degree}$ can be seen as transformers where the windings are equivalent with the impedances.
-  In order to scale up to $\SI{2364}{\ohm}$ the impedance of $TL_{12}$ in \autoref{fig:filter_transmission_line} it must be resized by $\sqrt{\frac{50}{2364}}$, yielding a $Z_0$ equal to $\SI{7.27}{\ohm}$.
+  The solution of these equations yields an impossibly high impedance and we rescale these impedances to $\SI{50}{\ohm}$. To this end the $\SI{50}{\ohm}$ sections of $\SI{90}{\degree}$ can be seen as quarter-wavelength transformers, hence it holds that
+
+  \begin{align}
+  	Z_{in} &= \frac{Z_0^2}{Z_L}
+  \label{eq:quarter_TL}
+  \end{align}
+
+  with $Z_0$ the impedance of the transformer, $Z_L$ the load impedance and $Z_{in}$ the input impedance. In case of Figure \ref{fig:filter_transmission_line} we want to rescale the $\SI{2364}{\ohm}$ TLs of $\SI{180}{\celsius}$ to $\SI{50}{\ohm}$ to ease the transformation to coupled lines in the following step and to get rid of the impossibly realisable impedances. We want to rescale $Z_L$ with a factor $\frac{50}{2364}$, but retain the same $Z_{in}$. Taking into account (\ref{eq:quarter_TL}) $Z_0$ needs to be scaled with $\sqrt{\frac{50}{2364}}$, yielding a $Z_0$ equal to $\SI{7.27}{\ohm}$.
   To restore the balance the section $TL_{14}$ is rescaled to this $Z_0$ as well.
-  The second resonator is resized in the same manner, transforming $TL_{14}$ yet again by $\sqrt{\frac{50}{2364}}$, resulting in an impedance of $\SI{1.06}{\ohm}$.
+  The second resonator is resized in the same manner, rescaling the $Z_0$ of $TL_{14}$ yet again by $\sqrt{\frac{50}{2364}}$, resulting in an impedance of $\SI{1.06}{\ohm}$.
 
   \begin{figure}[H]
     \centering
