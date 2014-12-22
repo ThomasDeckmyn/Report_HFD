@@ -343,7 +343,7 @@
     \label{fig:lna_meas_im}
   \end{figure}
 
-  In \autoref{fig:lna_meas_im} the vertical lines indicate the intercept points. The OIP3 is found by simply reading the value of the ordinate in both plots. For the final OIP3 we choose the average of both, namely $\SI{6.03}{\dbm}$.
+  In \autoref{fig:lna_meas_im} the vertical lines indicate the intercept points. The OIP3 is found by simply reading the value of the ordinate in both plots. For the final OIP3 we choose the average of both, namely $\SI{6.03}{\dbm}$, however we did not factor in the losses that are introduced by the power combiner used to inject the two tones simultaneously. Hence the OIP3 is $\SI{12}{\dbm}$.
 
   \subsubsection{Noise}
   To measure the noise, we choose to use the noise figure meter, as it is the most accurate for low noise figures ($\le$ $\SI{2}{\decibel}$).
@@ -351,8 +351,9 @@
 
   \subsubsection{Figure of merit}
   Finally we measure the power usage of the LNA: at $\SI{5}{\volt}$, a current of $\SI{13}{\milli\ampere}$ is drawn from the power supply, yielding a power consumption of $\SI{65}{\milli\watt}$.
-  Combining this value with the OIP3 measured earlier, we find a figure of merit of $0.06$, a value much lower than would be expected from simulation.
-  One explanation for this would be the lower intercept point: $\SI{6.03}{\dbm}$ vs. $\SI{16.27}{\dbm}$ from simulation.
+  Combining this value with the OIP3 measured earlier, we find a figure of merit of $0.244$, a value lower than would be expected from simulation.
+
+  One explanation for this would be the lower intercept point: $\SI{12}{\dbm}$ vs. $\SI{16.27}{\dbm}$ from simulation.
   A lower OIP3 would suggest a lower linearity than expected, however the $\SI{1}{\decibel}$ compression point is actually higher than the simulations would indicate.
 
 	\subsection{Filter}
