@@ -207,6 +207,20 @@
     \label{fig:filter_transmission_line}
   \end{figure}
 
+  The S-parameters for the schematics from Figures \ref{fig:filter_series_res} and \ref{fig:filter_transmission_line} are shown in Figure \ref{fig:filter_spar_TL}. Replacing the discrete series resonators with transmission lines has no significant effect on the S-parameters, because the bandwidth was already determined by the quarter wavelength transformers. The realized filter is within the specifications, i.e. no attenuation in the passband (ideal components are used) and more than $\SI{20}{\decibel}$ attenuation in the GSM1800-band.  
+
+  \begin{figure}[H]
+  \centering
+  	\begin{subfigure}{0.7\textwidth}
+  	\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S11_TL.eps}
+  	\end{subfigure}
+  	\begin{subfigure}{0.7\textwidth}
+  	\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S21_TL.eps}
+  	\end{subfigure}
+  	\caption{S-parameters for TL only implementation}
+  	\label{fig:filter_spar_TL}
+  \end{figure}
+
   These transmission lines have a characteristic impedance derived from the values of the capacitor and inductor in the resonator via following relation: 
   \begin{eqnarray*}
     Z_0 &=& \frac{2 \omega_{res} L_s}{\pi},\\
@@ -253,10 +267,24 @@
 
   	\begin{figure}[H]
   		\centering
-  		\includegraphics[width=0.8\textwidth]{fig/Filter/2nd_order/bandpass_subst_CL.pdf}
+  		\includegraphics[width=0.9\textwidth]{fig/Filter/2nd_order/bandpass_subst_CL.pdf}
   		\caption{Coupled lines filter}
   		\label{fig:filter_final_CL}
   	\end{figure} 
+
+  	The S-parameters for the coupled lines with added substrate are shown in Figure \ref{fig:filter_spar_subst_CL}. The most important change is the attenuation added in the passband due to substrate losses, as seen in Figure \ref{fig:filter_spar_subst_CL}, but with $\SI{1.3}{\decibel}$ still within the specification of $\SI{2}{\decibel}$. The bandwidth of the filter is approximately $\SI{50}{\mega\hertz}$.
+
+  \begin{figure}[H]
+  		\centering
+  	\begin{subfigure}{0.8\textwidth}
+  	\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S11_subst_CL.eps}
+  	\end{subfigure}
+  	\begin{subfigure}{0.8\textwidth}
+  	\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S21_subst_CL.eps}
+  	\end{subfigure}
+  	\caption{S-parameters for CL w/ subst. implementation}
+  	\label{fig:filter_spar_subst_CL}
+  \end{figure}
 
 \section{Layout}
 	\subsection{LNA}
