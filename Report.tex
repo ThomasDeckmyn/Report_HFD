@@ -159,7 +159,71 @@
     L_s &=& \frac{L Z_0}{\omega_0 \Delta f}\\
     C_s &=& \frac{\Delta f}{L Z_0 \omega_0}
   \end{eqnarray*}
-  Here $\Delta f$ is given by $\frac{BW}{f_0}$. We set the bandwidth to $\SI{50}{\mega\hertz}$ as we found out that in later iterations the bandwidth has the tendency to decrease.
+  Here $\Delta f$ is given by $\frac{BW}{f_0}$. We set the bandwidth to $\SI{30}{\mega\hertz}$ as we found out that in later iterations the bandwidth has the tendency to decrease.
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{fig/Filter/2nd_order/proto_1.pdf}
+      \caption{Capacitor - Inductor}
+      \label{fig:proto_capin}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{fig/Filter/2nd_order/proto_2.pdf}
+      \caption{Inductor - Capacitor}
+      \label{fig:proto_incap}
+    \end{subfigure}
+    \caption{Prototype Filters}
+    \label{fig:proto}
+  \end{figure}
+
+  For this design we followed the shunt-C transformation where via the use of quarter-wavelength transformers, the parallel resonators are replaced by their series equivalent. To ease calculations, we start from two prototypes (\autoref{fig:proto}) and combine these later on.
+
+  Using the transformations above, the schematics in \autoref{fig:filter_transform} are found.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/Filter/2nd_order/bandpass_discrete.pdf}
+    \caption{Transformation to bandpass filter}
+    \label{fig:filter_transform}
+  \end{figure}
+
+  \subsubsection{Transmission line transformation}
+  Both filters in \autoref{fig:filter_transform} are combined in \autoref{fig:filter_series_res} using quarter-wavelength transformers. 
+  The series resonators can be replaced by transmission line sections in a narrowband approximation (\autoref{fig:filter_transmission_line}).
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/Filter/2nd_order/bandpass_discrete_only_series_res.pdf}
+    \caption{Substitution with Quarter-wavelength transformers}
+    \label{fig:filter_series_res}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/Filter/2nd_order/bandpass_series_res_to_TL.pdf}
+    \caption{Transmission line only implementation}
+    \label{fig:filter_transmission_line}
+  \end{figure}
+
+  These transmission lines have a characteristic impedance derived from the values of the capacitor and inductor in the resonator via following relation: 
+  \begin{eqnarray*}
+    Z_0 &=& \frac{2 \omega_{res} L_s}{\pi},\\
+    \omega_{res} &=& \frac{1}{\sqrt{C_s L_s}}
+  \end{eqnarray*}
+
+  The solution of these equations yields an impossibly high impedance and we rescale these impedances to $\SI{50}{\ohm}$. To this end the $\SI{50}{\ohm}$ sections of $\SI{90}{\degree}$ can be seen as transformers where the windings are equivalent with the impedances.
+  In order to scale up to $\SI{2364}{\ohm}$ the impedance of $TL_{12}$ in \autoref{fig:filter_transmission_line} it must be resized by $\sqrt{\frac{50}{2364}}$, yielding a $Z_0$ equal to $\SI{7.27}{\ohm}$.
+  To restore the balance the section $TL_{14}$ is rescaled to this $Z_0$ as well.
+  The second resonator is resized in the same manner, transforming $TL_{14}$ yet again by $\sqrt{\frac{50}{2364}}$, resulting in an impedance of $\SI{1.06}{\ohm}$.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig/Filter/2nd_order/bandpass_TL_rescaled_imp.pdf}
+    \caption{Resized Transmission line segments}
+    \label{fig:filter_transmission_resized}
+  \end{figure}
 
 \section{Layout}
 	\subsection{LNA}
