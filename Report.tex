@@ -34,7 +34,7 @@
 	\textbf{Misschien specificaties nog eens oplijsten?}\\\\
 	The design of the LNA first requires a choice of topology. A common emittor toplogy is the best choice in this case, because it yields the highest power gain and has a moderate input and output impedance, hence it can easily be matched to a $\SI{50}{\ohm}$ system.
 		\subsubsection{DC Operating Point}
-			When determining the DC operating point for the BFP740 transistor a trade-off has to be made between minimal NF and maximum linearity. Based on the characteristics found in the datasheet\cite{transdatasheet} of the transistor we choose $V_{CE} = \SI{4}{\volt}$ and $I_C = \SI{20}{\milli\ampere}$ to obtain the highest possible linearity, i.e. $IP3 = \SI{27}{\dbm} $. For $I_C = \SI{20}{\milli\ampere}$ the NF is $\SI{0.7}{\decibel}$, which still leaves a lot of margin to stay below the specified NF of $\SI{1.5}{\decibel}$. From the datasheet we know that $\beta = 300$, which yields $I_B = \frac{I_C}{\beta} = \SI{66}{\micro\ampere}$, hence the circuit shown in Figure \ref{fig:lna_ce} can be constructed. DC blocking capacitor are added as not to interrupt the DC operating point of the transistor. The DC feed ensures DC current where needed and prevents RF current from entering the DC voltage source. \\
+			When determining the DC operating point for the BFP740 transistor a trade-off has to be made between minimal NF and maximum linearity. Based on the characteristics found in the datasheet \cite{transdatasheet} of the transistor we choose $V_{CE} = \SI{4}{\volt}$ and $I_C = \SI{20}{\milli\ampere}$ to obtain the highest possible linearity, i.e. $IP3 = \SI{27}{\dbm} $. For $I_C = \SI{20}{\milli\ampere}$ the NF is $\SI{0.7}{\decibel}$, which still leaves a lot of margin to stay below the specified NF of $\SI{1.5}{\decibel}$. From the datasheet we know that $\beta = 300$, which yields $I_B = \frac{I_C}{\beta} = \SI{66}{\micro\ampere}$, hence the circuit shown in Figure \ref{fig:lna_ce} can be constructed. DC blocking capacitor are added as not to interrupt the DC operating point of the transistor. The DC feed ensures DC current where needed and prevents RF current from entering the DC voltage source. \\
 
 			\begin{figure}[H]
 			\centering
@@ -152,7 +152,7 @@
   To remove as much noise and unwanted signals as possible, a filter will be placed in front of the LNA. This filter should of course pass the desired GPS signal and block the nearby GSM-1800 frequencies, of which the closest is $\SI{1710}{\mega\hertz}$.
   \subsubsection{Prototype}
   In order to design the filter, we start from a $2^{nd}$ order elliptic prototype. This filter consists of one capacitor and one inductor with an equal nominal value of $\sqrt{2}$.  It is matched to $\SI{1}{\ohm}$ ports and has a lowpass characteristic with a cut-off frequency of $\SI{1}{\hertz}$.
-  The prototype is transformed into a bandpass filter using following transformations\cite{coupled_lines}:
+  The prototype is transformed into a bandpass filter using following transformations \cite{coupled_lines}:
   \begin{eqnarray*}
     C_p &=& \frac{C}{Z_0 \omega_0 \Delta f}\\
     L_p &=& \frac{Z_0 \Delta f}{C \omega_0}\\
@@ -221,7 +221,7 @@
   	\label{fig:filter_spar_TL}
   \end{figure}
 
-  These transmission lines have a characteristic impedance derived from the values of the capacitor and inductor in the resonator via following relation\cite{coupled_lines}: 
+  These transmission lines have a characteristic impedance derived from the values of the capacitor and inductor in the resonator via following relation \cite{coupled_lines}: 
   \begin{eqnarray*}
     Z_0 &=& \frac{2 \omega_{res} L_s}{\pi},\\
     \omega_{res} &=& \frac{1}{\sqrt{C_s L_s}}
@@ -234,7 +234,7 @@
   \label{eq:quarter_TL}
   \end{align}
 
-  with $Z_0$ the impedance of the transformer, $Z_L$ the load impedance and $Z_{in}$ the input impedance\cite{pozar}. In case of Figure \ref{fig:filter_transmission_line} we want to rescale the $\SI{2364}{\ohm}$ TLs of $\SI{180}{\celsius}$ to $\SI{50}{\ohm}$ to ease the transformation to coupled lines in the following step and to get rid of the impossibly realisable impedances. We want to rescale $Z_L$ with a factor $\frac{50}{2364}$, but retain the same $Z_{in}$. Taking into account (\ref{eq:quarter_TL}) $Z_0$ needs to be scaled with $\sqrt{\frac{50}{2364}}$, yielding a $Z_0$ equal to $\SI{7.27}{\ohm}$.
+  with $Z_0$ the impedance of the transformer, $Z_L$ the load impedance and $Z_{in}$ the input impedance \cite{pozar}. In case of Figure \ref{fig:filter_transmission_line} we want to rescale the $\SI{2364}{\ohm}$ TLs of $\SI{180}{\celsius}$ to $\SI{50}{\ohm}$ to ease the transformation to coupled lines in the following step and to get rid of the impossibly realisable impedances. We want to rescale $Z_L$ with a factor $\frac{50}{2364}$, but retain the same $Z_{in}$. Taking into account (\ref{eq:quarter_TL}) $Z_0$ needs to be scaled with $\sqrt{\frac{50}{2364}}$, yielding a $Z_0$ equal to $\SI{7.27}{\ohm}$.
   To restore the balance the section $TL_{14}$ is rescaled to this $Z_0$ as well.
   The second resonator is resized in the same manner, rescaling the $Z_0$ of $TL_{14}$ yet again by $\sqrt{\frac{50}{2364}}$, resulting in an impedance of $\SI{1.06}{\ohm}$.
 
@@ -247,7 +247,7 @@
 
   \subsubsection{Coupled Lines}
 
-  	The next step is transforming to a coupled lines filter, according to the transformation shown in Figure \ref{fig:filter_CL_transform} with:
+  	The next step is transforming to a coupled lines filter, according to the transformation \cite{pozar} shown in Figure \ref{fig:filter_CL_transform} with:
   	\begin{align}
   		\begin{cases}
   			J' = \frac{J}{Z_0 sin(\theta)} \\
