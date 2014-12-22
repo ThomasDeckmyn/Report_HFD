@@ -231,6 +231,33 @@
     \label{fig:filter_transmission_resized}
   \end{figure}
 
+  \subsubsection{Coupled Lines}
+
+  	The next step is transforming to a coupled lines filter, according to the transformation shown in Figure \ref{fig:filter_CL_transform} with:
+  	\begin{align}
+  		\begin{cases}
+  			J' = \frac{J}{Z_0 sin(\theta)} \\
+  			Z_e = Z_0 (1 + J' + J'^2) \\
+  			Z_o = Z_0 (1 - J' + J'^2)
+  		\end{cases}
+  	\end{align}
+
+  	\begin{figure}[H]
+  		\centering
+  		\includegraphics[width=0.5\textwidth]{fig/Filter/2nd_order/CL_transformation.pdf}
+  		\caption{Transformation to coupled lines}
+  		\label{fig:filter_CL_transform}
+  	\end{figure} 
+
+  	After the transformation to coupled lines, the ideal lines are substituted with microstrip lines and the substrate is added to the design. The dimensions of the coupled lines are calculated from the even and odd impedances using LineCalc. The final schematic is shown in Figure \ref{fig:filter_final_CL}. 
+
+  	\begin{figure}[H]
+  		\centering
+  		\includegraphics[width=0.8\textwidth]{fig/Filter/2nd_order/bandpass_subst_CL.pdf}
+  		\caption{Coupled lines filter}
+  		\label{fig:filter_final_CL}
+  	\end{figure} 
+
 \section{Layout}
 	\subsection{LNA}
 		\subsubsection{Generation of Layout}
