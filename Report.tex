@@ -342,6 +342,30 @@
 
 
 	\subsection{Filter}
+		\subsubsection{Generated Layout}
+			The generated layout is shown in Figure \ref{fig:filter_layout}. The dimensions are $\SI{1}{\centi\meter}$ by $\SI{9}{\centi\meter}$, which yields an area of $\SI{9}{\centi\meter\squared}$. 
+
+			\begin{figure}[H]
+			\centering
+				\includegraphics[width=\textwidth]{fig/Filter/2nd_order/layout.pdf}
+				\caption{Generated layout CL filter}
+				\label{fig:filter_layout}
+			\end{figure}
+		
+		\subsubsection{EM-model Simulations}
+			After generation of the layout an EM-model is extracted and the obtained S-parameters are shown in Figure \ref{fig:filter_em_model}. The attenuation in the passband is $\SI{1.8}{\decibel}$, which is still within the specification of $\SI{2}{\decibel}$ and the bandwidth is approximately $\SI{50}{\mega\hertz}$.
+
+			\begin{figure}[H]
+			\centering
+				\begin{subfigure}{0.8\textwidth}
+				\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S11_layout.eps}
+				\end{subfigure}
+				\begin{subfigure}{0.8\textwidth}
+				\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S21_layout.eps}
+				\end{subfigure}
+			\caption{S-parameters for EM-model simulations}
+			\label{fig:filter_em_model}
+			\end{figure} 
 \section{Results}
 	\subsection{LNA}
   \subsubsection{S-Parameters}
