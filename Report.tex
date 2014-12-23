@@ -25,14 +25,15 @@
 \begin{document}
 \maketitle
 
+\newpage
 \tableofcontents
 \newpage
 \section{Circuit Design}
 	\subsection{LNA}
 
-	The design of the LNA first requires a choice of topology. A common emittor toplogy is the best choice in this case, because it yields the highest power gain and has a moderate input and output impedance, hence it can easily be matched to a $\SI{50}{\ohm}$ system.
+	The design of an LNA requires the choice of a topology. A common emitter topology is the best choice in this case, because it yields the highest power gain and has a moderate input and output impedance, hence it can easily be matched to a $\SI{50}{\ohm}$ system.
 		\subsubsection{DC Operating Point}
-			When determining the DC operating point for the BFP740 transistor a trade-off has to be made between minimal NF and maximum linearity. Based on the characteristics found in the datasheet \cite{transdatasheet} of the transistor we choose $V_{CE} = \SI{4}{\volt}$ and $I_C = \SI{20}{\milli\ampere}$ to obtain the highest possible linearity, i.e. $IP3 = \SI{27}{\dbm} $. For $I_C = \SI{20}{\milli\ampere}$ the NF is $\SI{0.7}{\decibel}$, which still leaves a lot of margin to stay below the specified NF of $\SI{1.5}{\decibel}$. From the datasheet we know that $\beta = 300$, which yields $I_B = \frac{I_C}{\beta} = \SI{66}{\micro\ampere}$, hence the circuit shown in Figure \ref{fig:lna_ce} can be constructed. DC blocking capacitor are added as not to interrupt the DC operating point of the transistor. The DC feed ensures DC current where needed and prevents RF current from entering the DC voltage source. \\
+			When determining the DC operating point for the BFP740 transistor a trade-off has to be made between minimal noise figure (NF) and maximum linearity. Based on the characteristics found in the datasheet \cite{transdatasheet} of the transistor we choose $V_{CE} = \SI{4}{\volt}$ and $I_C = \SI{20}{\milli\ampere}$ to obtain the highest possible linearity, i.e. $IP3 = \SI{27}{\dbm} $. For $I_C = \SI{20}{\milli\ampere}$ the NF is $\SI{0.7}{\decibel}$, which still leaves a lot of margin to stay below the specified NF of $\SI{1.5}{\decibel}$. From the datasheet we know that $\beta = 300$, which yields $I_B = \frac{I_C}{\beta} = \SI{66}{\micro\ampere}$, hence the circuit shown in Figure \ref{fig:lna_ce} can be constructed. DC blocking capacitors are added, making sure we do not interrupt the DC operating point of the transistor. The DC feed ensures DC current where needed and prevents RF current from entering the DC voltage source. \\
 
 			\begin{figure}[H]
 			\centering
@@ -41,7 +42,7 @@
 			\label{fig:lna_ce}
 			\end{figure}
 
-			To enable the $\SI{5}{\volt}$ supply the DC feed can be replaced by a resistor, which will lower the collecor emittor voltage. We want $I_C$ to still be $\SI{20}{\milli\ampere}$ and $V_{CE}$ $\SI{4}{\volt}$. This means we need a $\SI{1}{\volt}$ voltage drop over the resistor and $\SI{20}{\milli\ampere}$ going through it, hence $R = \frac{V}{I} = \SI{50}{\ohm}$. We obtain the circuit in Figure \ref{fig:lna_5V}.
+			To enable the $\SI{5}{\volt}$ supply the DC feed can be replaced by a resistor, which will lower the collector emitter voltage. We want $I_C$ to still be $\SI{20}{\milli\ampere}$ and $V_{CE}$ $\SI{4}{\volt}$. This requires a $\SI{1}{\volt}$ voltage drop over the resistor and $\SI{20}{\milli\ampere}$ going through it, hence $R = \frac{V}{I} = \SI{50}{\ohm}$. We obtain the circuit in Figure \ref{fig:lna_5V}.
 
 			\begin{figure}[H]
 			\centering
@@ -51,9 +52,9 @@
 			\end{figure}
 
 		\subsubsection{Stability}
-			To decide wether the amplifier is stable, we draw the input and output stability circles. We know that in the center of the Smith Chart $\Gamma_{in} = |S_{11}] < 1$ and $\Gamma_{out} = |S_{22}| < 1$, hence if the stability circles do not intersect with the unity circle the amplifier is stable for all possible passive terminations at the design frequency.\cite{pozar} The value of the stability resistor(s) tunes diameter and position of the stability circle, hence stability can be obtained by tuning the resistor(s).\\
+			To decide whether the amplifier is stable, we draw the input and output stability circles. We know that in the center of the Smith Chart $\Gamma_{in} = |S_{11}| < 1$ and $\Gamma_{out} = |S_{22}| < 1$, hence if the stability circles do not intersect with the unity circle the amplifier is stable for all possible passive terminations at the design frequency.\cite{pozar} The value of the stability resistor(s) tunes diameter and position of the stability circle, hence stability can be obtained by tuning the resistor(s).\\
 
-			 To obtain a stable amplifier there a few choices that can be made concerning the position of the stability resistor, i.e. shunt or series at input or output, or a combination of multiple resistors. As we are designing a low noise amplifier a series resistor at the input would be a bad choice, as this would increase the NF considerably. To stabilize the amplifier with solely a shunt resistance at the input a very high resistance is needed (order of $\SI{100}{\kilo\ohm}$), which would put non realisable constraints on the matching network. After analyzing the two remaining options and combinations, we conclude that best performance with respect to NF and gain is achieved with a series resistance at the output and a shunt resistance at the input. The realized stabilization circuit can be seen in Figure \ref{fig:lna_stable}.
+			 To obtain a stable amplifier there a few choices that can be made concerning the position of the stability resistor, i.e. shunt or series at input or output, or a combination of multiple resistors. As we are designing a low noise amplifier, a series resistor at the input would be a bad choice, as this would increase the NF considerably. In order to stabilize the amplifier with solely a shunt resistance at the input, a very high resistance is needed (order of $\SI{100}{\kilo\ohm}$), which would put non realisable constraints on the matching network. After analyzing the two remaining options and combinations, we conclude that best performance with respect to NF and gain is achieved with a series resistance at the output and a shunt resistance at the input. The realized stabilization circuit can be seen in \autoref{fig:lna_stable}.
 
 			 \begin{figure}[H]
 				\centering
@@ -65,7 +66,7 @@
 		\subsubsection{Gain and Noise Matching and Biasing}
 		\label{sec:lna_matching}
 
-			What is still left to do is selecting the load and source reflection coefficients. For this we draw constant gain circles in the output plane and constant noise circles in the input plane. Next, we choose the load reflection coefficient $\Gamma_L$ in such a way that the source reflection coefficient $\Gamma_S$ is within the constant noise circle of $\SI{1.5}{\decibel}$ as specified. To achieve a NF that is below $\SI{1.5}{\decibel}$ we will need to sacrifice gain at the output, as can be seen in Figure \ref{fig:lna_circles}. The load reflection $\Gamma_L$ is chosen on the $\SI{20}{\decibel}$ gain circle and then the source reflection $\Gamma_S$ is within the $\SI{1.5}{\decibel}$ noise circle. \\
+			What is still left to do is selecting the load and source reflection coefficients. For this we draw constant gain circles in the output plane and constant noise circles in the input plane. Next, we choose the load reflection coefficient $\Gamma_L$ in such a way that the source reflection coefficient $\Gamma_S$ is within the constant noise circle of $\SI{1.5}{\decibel}$ as specified. To achieve a NF that is below $\SI{1.5}{\decibel}$ we will need to sacrifice gain at the output, as can be seen in Figure \ref{fig:lna_circles}. The load reflection $\Gamma_L$ is chosen on the $\SI{20}{\decibel}$ gain circle to position the source reflection $\Gamma_S$ within the $\SI{1.5}{\decibel}$ noise circle. \\
 
 			First, the output is matched such that $\Gamma_L$ is located at $Z_0 (0.645 + j 0.109)$ on the Smith Chart, which will reduce the gain to $\SI{20}{\decibel}$, but the NF will be within the specifications. Second, the input impedance is matched to $\SI{50}{\ohm}$. The matching is performed using the Smith Chart Tool in ADS and both networks consist of a piece of transmission line and a capacitor. The circuit with the added matching networks is shown in Figure \ref{fig:lna_pre_layout}. The DC blocks can be omitted as the capacitors of the matching network now act as DC blocks. 
 
@@ -103,7 +104,7 @@
 
 		\subsubsection{Gain and Noise Linearity}
 
-			To obtain the 1dB Compression Point large signal S-parameters need to be simulated. The difference between the simulated gain characteristic and the ideal (linear) gain characteristic is plotted as a function of the input power in Figure \ref{fig:lna_1dbcp}. We see that the 1-dBCP is reached for an input power equal to $\SI{-15.5}{\dbm}$. We also know that the gain of the amplifier is $\SI{20}{\decibel}$, hence we get an output referred 1-dBCP of $\SI{4.5}{\dbm}$ which is within the specifications. To increase the linearity further, we added inductive emittor degeneration with an inductor of $\SI{100}{\pico\henry}$. This will not be a physical component, but the inductance will be present due to the vias to the ground plane. 
+			To obtain the 1dB Compression Point, large signal S-parameters need to be simulated. The difference between the simulated gain characteristic and the ideal (linear) gain characteristic is plotted as a function of the input power in Figure \ref{fig:lna_1dbcp}. We see that the 1-dBCP is reached for an input power equal to $\SI{-15.5}{\dbm}$. We also know that the gain of the amplifier is $\SI{20}{\decibel}$, hence we get an output referred 1-dBCP of $\SI{4.5}{\dbm}$ which is within the specifications. To increase the linearity further, we added inductive emitter degeneration with an inductor of $\SI{100}{\pico\henry}$. This will not be a physical component, but the inductance will be present due to the vias to the ground plane. 
 
 			\begin{figure}[H]
 			\centering
@@ -113,9 +114,9 @@
 			\end{figure}
 
 		\subsubsection{Figure of merit}
-			We want the LNA to be as linear as possible, but the DC power consumption needs to be kept as low as possible. That's why we will use the ratio $\frac{OIP3}{P_{DC}}$ as a figure of merit (FOM), with $OIP3$ the Output Referred Third Order Intercept Point and $P_{DC}$ the DC power consumption. The higher the FOM, the higher the linearity of the amplifier and the lower the power consumption. \\
+			We want the LNA to be as linear as possible, but the DC power consumption needs to be kept as low as possible as well. Therefore, we will use the ratio $\frac{OIP3}{P_{DC}}$ as a figure of merit (FOM), with $OIP3$ the Output Referred Third Order Intercept Point and $P_{DC}$ the DC power consumption. A higher value for the FOM means a higher linearity and a lower power consumption.\\
 
-			To calculate OIP3 we perfom a Harmonic Balance simulation in ADS, i.e. we send two tones into the circuit and observe the third order mixing products. Figure \ref{fig:lna_fom} shows these third order products and their output referred intercept point in the table below the figure. 
+			To calculate OIP3, we perform a Harmonic Balance simulation in ADS, i.e.\ we send two tones into the circuit and observe the third order mixing products. Figure \ref{fig:lna_fom} shows these third order products and their output referred intercept point in the table below the figure. 
 			
 			\begin{figure}[H]
 				\centering
@@ -177,7 +178,7 @@
     \label{fig:proto}
   \end{figure}
 
-  For this design we followed the shunt-C transformation where via the use of quarter-wavelength transformers, the parallel resonators are replaced by their series equivalent. To ease calculations, we start from two prototypes (\autoref{fig:proto}) and combine these later on.
+  For this design we followed the shunt-C transformation where, via the use of quarter-wavelength transformers, the parallel resonators are replaced by their series equivalent. To ease calculations, we start from two prototypes (\autoref{fig:proto}) and combine these later on.
 
   Using the transformations above, the schematics in \autoref{fig:filter_transform} are found.
 
@@ -226,15 +227,15 @@
     \omega_{res} &=& \frac{1}{\sqrt{C_s L_s}}
   \end{eqnarray*}
 
-  The solution of these equations yields an impossibly high impedance and we rescale these impedances to $\SI{50}{\ohm}$. To this end the $\SI{50}{\ohm}$ sections of $\SI{90}{\degree}$ can be seen as quarter-wavelength transformers, hence it holds that
+  The solution of these equations yields an impossibly high impedance and we rescale these impedances to $\SI{50}{\ohm}$. To this end the $\SI{50}{\ohm}$ sections of $\SI{90}{\degree}$ can be seen as quarter-wavelength transformers, hence the following equation holds:
 
   \begin{align}
   	Z_{in} &= \frac{Z_0^2}{Z_L}
   \label{eq:quarter_TL}
   \end{align}
 
-  with $Z_0$ the impedance of the transformer, $Z_L$ the load impedance and $Z_{in}$ the input impedance \cite{pozar}. In case of Figure \ref{fig:filter_transmission_line} we want to rescale the $\SI{2364}{\ohm}$ TLs of $\SI{180}{\celsius}$ to $\SI{50}{\ohm}$ to ease the transformation to coupled lines in the following step and to get rid of the impossibly realisable impedances. We want to rescale $Z_L$ with a factor $\frac{50}{2364}$, but retain the same $Z_{in}$. Taking into account (\ref{eq:quarter_TL}) $Z_0$ needs to be scaled with $\sqrt{\frac{50}{2364}}$, yielding a $Z_0$ equal to $\SI{7.27}{\ohm}$.
-  To restore the balance the section $TL_{14}$ is rescaled to this $Z_0$ as well.
+  With $Z_0$ the impedance of the transformer, $Z_L$ the load impedance and $Z_{in}$ the input impedance \cite{pozar}. In case of Figure \ref{fig:filter_transmission_line} we want to rescale the $\SI{2364}{\ohm}$ TLs of $\SI{180}{\degree}$ to $\SI{50}{\ohm}$, to ease the transformation to coupled lines in the following step and to dispose of the impossibly realisable impedances. We want to rescale $Z_L$ with a factor $\frac{50}{2364}$, but retain the same $Z_{in}$. Taking into account (\ref{eq:quarter_TL}) $Z_0$ needs to be scaled with $\sqrt{\frac{50}{2364}}$, yielding a $Z_0$ equal to $\SI{7.27}{\ohm}$.
+  To restore the balance the section $TL_{14}$ is rescaled to this new $Z_0$ as well.
   The second resonator is resized in the same manner, rescaling the $Z_0$ of $TL_{14}$ yet again by $\sqrt{\frac{50}{2364}}$, resulting in an impedance of $\SI{1.06}{\ohm}$.
 
   \begin{figure}[H]
@@ -290,7 +291,7 @@
 \section{Layout}
 	\subsection{LNA}
 		\subsubsection{Generation of Layout}
-			Before generating a layout for the designed LNA circuit, the schematic is made layout friendly. This means the nets in the schematic are replaced by transmission line segments with appropriate impedance, pads for the discrete components are added and discontinuities in microstrip line thickness are modelled in the schematic. After generating a layout from the schematic ground planes are added and vias are placed to connect to the underlying ground plane. A plane for the DC supply voltage is added as well and is placed close to the ground plane for decoupling of the supply voltage, i.e. the small gap acts as a decoupling capacitance. The resulting layout is shown in Figure \ref{fig:lna_layout}. All traces have a width according to an impedance of $\SI{50}{\ohm}$ except for the transmission line in the matching network at the input, which is $\SI{75}{\ohm}$ to reduce the length of the line, and the trace between collector and base as only DC-current flows there. 
+			Before generating a layout for the designed LNA circuit, the schematic is made layout friendly. This means the nets in the schematic are replaced by transmission line segments with appropriate impedance, pads for the discrete components are added and discontinuities in microstrip line thickness are modelled in the schematic. After generating a layout from the schematic, ground planes are added and vias are placed to connect to the underlying ground plane. A plane for the DC supply voltage is added as well and is placed close to the ground plane for decoupling of the supply voltage, i.e. the small gap acts as a decoupling capacitance. The resulting layout is shown in Figure \ref{fig:lna_layout}. All traces have a width according to an impedance of $\SI{50}{\ohm}$ except for the transmission line in the matching network at the input, which is $\SI{75}{\ohm}$ to reduce the length of the line, and the trace between collector and base as only DC-current flows there. 
 
 			\begin{figure}[H]
 			\centering
@@ -397,7 +398,7 @@
   A curve is fitted to the initial linear part, and the vertical black line indicates the point where the difference between the fitted and measured curve exceeds $\SI{1}{\decibel}$.
   For the tested LNA, this point is at an input power of $\SI{-14}{\dbm}$ and given the gain measured in \autoref{sub:sparams}, this results in an output-referred $\SI{1}{\decibel}$ compression point of $\SI{5.45}{\dbm}$.
 
-  \begin{figure}
+  \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{fig/LNA/compression_lna.eps}
     \caption{Output vs. Input Power}
@@ -406,7 +407,7 @@
 
   \begin{quote} \textit{\textbf{Question:} Could one measure the 1dBCP without spectrum analyzer, simply using a power meter? }\end{quote}
 
-  If one would use a power meter to measure the output power of the DUT, the measured power would consist of contributions of all harmonic frequencies, but only the power of the fundamental order is needed to calculate the 1 dBCP. Hence, the compression point would be overestimated. A solution would be to place a bandpass filter in front of the power meter to filter out only the fundamental order, but the attenuation in the passband should be precisely known. 
+  If one would use a power meter to measure the output power of the DUT, the measured power would consist of contributions of all harmonic frequencies, but only the power of the fundamental order is needed to calculate the 1 dBCP. Hence, the compression point would be overestimated. A solution would be to place a bandpass filter in front of the power meter to filter out everything but the fundamental order, but the attenuation in the passband should be precisely known. 
 
   \begin{quote} \textit{\textbf{Question:} Could one measure the 1 dBCP using a Network Analyzer?} \end{quote}
 
@@ -423,7 +424,7 @@
   The output power at these four frequencies is then measured for varying input powers, and the lowside and highside measurements are shown in \autoref{fig:lna_meas_im_low} and \autoref{fig:lna_meas_im_high} respectively.
   Once again, lines are fitted to the linear section of the measurements (i.e.\ for input powers \textless $\SI{-14}{\dbm}$).
 
-  \begin{figure}
+  \begin{figure}[H]
     \centering
     \begin{subfigure}{0.5\textwidth}
       \centering
@@ -465,13 +466,10 @@
 
   Which is independent of the BW. 
 
-  \begin{quote} \textit{\textbf{Question:} Could you estimate the measurement error caused by neglecting the noise of the preamplifier for the example presented above? }\end{quote}
-
-
 
   \begin{quote} \textit{\textbf{Question:} On an oscilloscope one can use the averaging function to remove the noise on a waveform. Does the averaging function on a spectrum analyzer work in the same way? }\end{quote}
 
-  When averaging on a spectrum analyzer, one averages the power of the signal over frequency. The noise power ofcourse has some fluctuations as a function of frequency, which can be seen as noise on the noise component. When averaging on the analyzer, the noise on the noise will be averaged out, but the noise level will not decrease. This causes the noise to be flat over frequency and hence all frequencies get the same noise contribution. On the oscilloscope however, the averaging is in the time domain, which yields low pass behavior. The noise power at higher frequencies is decreased. 
+  When averaging on a spectrum analyzer, one averages the power of the signal over frequency. The noise power of course has some fluctuations as a function of frequency, which can be seen as noise on the noise component. When averaging on the analyzer, the noise on the noise will be averaged out, but the noise level will not decrease. This causes the noise to be flat over the entire frequency range and hence all frequencies get the same noise contribution. On the oscilloscope however, the averaging is in the time domain, which yields low pass behavior. The noise power at higher frequencies is decreased. 
 
 
   \subsubsection{Figure of merit}
@@ -480,6 +478,7 @@
 
   One explanation for this would be the lower intercept point: $\SI{12}{\dbm}$ vs. $\SI{16.27}{\dbm}$ from simulation.
   A lower OIP3 would suggest a lower linearity than expected, however the $\SI{1}{\decibel}$ compression point is actually higher than the simulations would indicate.
+  Yet, this comparison is somewhat flawed as we have not simulated the same frequencies as in the measurement.
 
 
    \subsubsection{Summary}
@@ -526,7 +525,7 @@
     \label{fig:filter_meas_sparams}
   \end{figure}
 
-  The board measures approx. $\SI{1}{\centi\meter}$ by $\SI{9}{\centi\meter}$, yielding a surface of $\SI{9}{\centi\meter\squared}$, which serves as a Figure of Merit. 
+  The board measures approx. $\SI{1}{\centi\meter}$ by $\SI{9}{\centi\meter}$, yielding a surface of $\SI{9}{\centi\meter\squared}$, which serves as a figure of merit. 
 
  
   \subsection{Complete System}
@@ -542,7 +541,7 @@
   \end{figure}
 \section{Conclusion}
 
-	As a conclusion for the design of the GPS receiver front end we can state that for the LNA all specifications have been met, i.e. the gain is more than $\SI{16}{\decibel}$, the noise figure is below $\SI{1.5}{\decibel}$ and the bandwidth is more than the desired $\SI{2}{\mega\hertz}$ (fairly overdimensioned). There is correspondence between the simulations and the real life product, in some aspects (e.g. 1 dBCP) the real life product is even better than the simulations predicted. This can be due to several reasons, e.g. it can be an indication that the model for the transistor is too pessimistic. \\
+	As a conclusion for the design of the GPS receiver front end we can state that for the LNA all specifications have been met, i.e. the gain is over $\SI{16}{\decibel}$, the noise figure is below $\SI{1.5}{\decibel}$ and the bandwidth is more than the desired $\SI{2}{\mega\hertz}$ (fairly over dimensioned). There is correspondence between the simulations and the real life product in some aspects (e.g. 1 dBCP) but some features are even better than the simulations predicted. This can be due to several reasons, e.g. it can be an indication that the model for the transistor is too pessimistic. \\
 
 	For the filter not all specifications have been met, which does not correspond to the simulations, i.e. the attenuation in the stop band is more than the desired $\SI{2}{\decibel}$. Again, several causes can be found, e.g. the sensitivity of the design to the parameters of the coupled lines together with the limited precision of the production process. \\
 
@@ -551,12 +550,12 @@
 \section{Further improvements}
 
 	\subsection{LNA}
-		As stated before, there is good correspondence between simulation and real life product. Nevertheless we noticed a drop of approximately $\SI{4}{\decibel}$ in the $OIP_3$, which is now at $\SI{12}{\decibel}$, while the 1 dBCP has increased with respect to the simulations. This seems counterintuitive as an increase of the 1 dBCP indicates an increase of linearity, but a decrease of $OIP_3$ indicates quite the opposite. 
+		As stated before, there is good correspondence between simulation and real life product. Nevertheless we noticed a drop of approximately $\SI{4}{\decibel}$ in the $OIP_3$, which is now at $\SI{12}{\decibel}$, while the 1 dBCP has increased with respect to the simulations. This seems counter-intuitive as an increase of the 1 dBCP indicates an increase of linearity, but a decrease of $OIP_3$ indicates quite the opposite. 
 
 	\subsection{Filter}
-		A first improvement to the filter would be to decrease the bandwidth. The specifications state that a bandwidth of $\SI{2}{\mega\hertz}$ is needed, but we achieved $\SI{50}{\mega\hertz}$, which is well overdimensioned. As there always is a trade off between bandwidth and noise, a smaller bandwidth would be better for noise considerations. \\
+		A first improvement to the filter would be to decrease the bandwidth. The specifications state that a bandwidth of $\SI{2}{\mega\hertz}$ is needed, but we achieved $\SI{50}{\mega\hertz}$, which is well over dimensioned. As there always is a trade off between bandwidth and noise, a smaller bandwidth would be better for noise considerations. \\
 
-		Secondly, the attenuation in the passband could be improved, as it is the only specification that hasn't been met: $\SI{2.5}{\decibel}$ instead of the desired maximum of $\SI{2}{\decibel}$. This could be done by decreasing the attenuation even further in the simulation by means of shorter transmission lines or smaller gaps between the TLs, as this will result in more coupling, while still meeting the other specifications. Hence, it will be a complicated optimization. \\
+		Secondly, the attenuation in the passband could be improved, as it is the only specification that has not been met: $\SI{2.5}{\decibel}$ instead of the desired maximum of $\SI{2}{\decibel}$. This could be done by decreasing the attenuation even further in the simulation by means of shorter transmission lines or smaller gaps between the TLs, as this will result in more coupling, while still meeting the other specifications. Hence, it will be a complicated optimization. \\
 
 		Thirdly, as the area of the filter is used as a FOM, it could be made smaller by folding the coupled lines. 
 
