@@ -353,14 +353,14 @@
 			\end{figure}
 		
 		\subsubsection{EM-model Simulations}
-			After generation of the layout an EM-model is extracted and the obtained S-parameters are shown in Figure \ref{fig:filter_em_model}. The attenuation in the passband is $\SI{1.8}{\decibel}$, which is still within the specification of $\SI{2}{\decibel}$ and the bandwidth is approximately $\SI{50}{\mega\hertz}$.
+			After generation of the layout an EM-model is extracted and the obtained S-parameters are shown in Figure \ref{fig:filter_em_model}. The attenuation in the passband is $\SI{1.8}{\decibel}$, which is still within the specification of $\SI{2}{\decibel}$ and the bandwidth is approximately $\SI{50}{\mega\hertz}$. The attenuation in the GSM1800 band is well below $\SI{20}{\decibel}$, as desired. 
 
 			\begin{figure}[H]
 			\centering
-				\begin{subfigure}{0.8\textwidth}
+				\begin{subfigure}{0.7\textwidth}
 				\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S11_layout.eps}
 				\end{subfigure}
-				\begin{subfigure}{0.8\textwidth}
+				\begin{subfigure}{0.7\textwidth}
 				\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S21_layout.eps}
 				\end{subfigure}
 			\caption{S-parameters for EM-model simulations}
@@ -479,6 +479,30 @@
   One explanation for this would be the lower intercept point: $\SI{12}{\dbm}$ vs. $\SI{16.27}{\dbm}$ from simulation.
   A lower OIP3 would suggest a lower linearity than expected, however the $\SI{1}{\decibel}$ compression point is actually higher than the simulations would indicate.
 
+
+   \subsubsection{Summary}
+
+  \begin{table}[H]
+		\centering
+		\begin{tabular}{|l|r|r|r|r|}
+			\hline
+			 &  \textbf{Measurement} & \textbf{EM-model} &  \textbf{Schematic} & \textbf{Specs} \\
+			\hline
+			\textbf{SS Gain} & 19.45 dB & 18.87 dB &  20 dB & $>$ 16 dB \\
+			\hline
+			\textbf{NF} & 1.22 dB & 1.412 dB & 1.196 dB & $\leq$ 1.5 dB \\
+			\hline
+			\textbf{Output ref. 1dBCP} & 5.45 dBm & 4.37 dBm & 4.5 dBm & $>$ 3 dBm \\
+			\hline
+			\textbf{FOM} & 0.244 & 0.503 & 0.33 & Max. \\
+			\hline
+		\end{tabular}
+		\caption{Summarizing achieved specs after measurements}
+		\label{tab:lna_meas_summ}
+  \end{table}
+
+
+
 	\subsection{Filter}
   \autoref{fig:filter_meas_s21} displays the insertion loss of the filter. While we can see that the lowest GSM-1800 frequency of $\SI{1710}{\mega\hertz}$ is attenuated sufficiently, the passband has slightly too much loss.
   The $\SI{-10}{\decibel} S_{11}$ is $\SI{50}{\mega\hertz}$ and thus well over the required specifications. 
@@ -502,6 +526,7 @@
 
   The board measures approx. $\SI{1}{\centi\meter}$ by $\SI{9}{\centi\meter}$, yielding a surface of $\SI{9}{\centi\meter\squared}$, which serves as a Figure of Merit. 
 
+ 
   \subsection{Complete System}
   In order to test the complete system, the filter is placed in front of the LNA, and two tones are injected into the system: one at $\SI{1575.42}{\mega\hertz}$ (i.e.\ the desired signal) and one at $\SI{1710}{\mega\hertz}$ (i.e.\ the disturbance).  
   Both signals have a power of $\SI{-30}{\dbm}$ and the combination of cables and connectors used in the set-up has a loss of approx. $\SI{7}{\dbm}$.
@@ -515,9 +540,16 @@
   \end{figure}
 \section{Conclusion}
 
+	As a conclusion for the design of the GPS receiver front end we can state that for the LNA all specifications have been met, i.e. the gain is more than $\SI{16}{\decibel}$, the noise figure is below $\SI{1.5}{\decibel}$ and the bandwidth is more than the desired $\SI{2}{\mega\hertz}$ (fairly overdimensioned). There is correspondence between the simulations and the real life product, in some aspects (e.g. 1 dBCP) the real life product is even better than the simulations predicted. This can be due to several reasons, e.g. it can be an indication that the model for the transistor is too pessimistic. \\
+
+	For the filter not all specifications have been met, which does not correspond to the simulations, i.e. the attenuation in the stop band is more than the desired $\SI{2}{\decibel}$. Again, several causes can be found, e.g. the sensitivity of the design to the parameters of the coupled lines together with the limited precision of the production process. \\
+
+	The combination of LNA and filter proves to function properly. The desired signal is amplified with approximately $\SI{16}{\decibel}$ and the disturbance is attenuated with more than $\SI{20}{\decibel}$. We can conclude that the design of the GPS receiver front end has succeeded.  
+
 \section{Further improvements}
 
 	\subsection{LNA}
+		As stated before, there is good correspondence between simulation and real life product. Nevertheless we noticed a drop of approximately $\SI{4}{\decibel}$ in the $OIP_3$, which is now at $\SI{12}{\decibel}$, while the 1 dBCP has increased with respect to the simulations. This seems counterintuitive as an increase of the 1 dBCP indicates an increase of linearity, but a decrease of $OIP_3$ indicates quite the opposite. 
 
 	\subsection{Filter}
 		A first improvement to the filter would be to decrease the bandwidth. The specifications state that a bandwidth of $\SI{2}{\mega\hertz}$ is needed, but we achieved $\SI{50}{\mega\hertz}$, which is well overdimensioned. As there always is a trade off between bandwidth and noise, a smaller bandwidth would be better for noise considerations. \\

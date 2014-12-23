@@ -78,29 +78,29 @@
     legend('Series res. discrete','Transmission Line');
     print('-depsc', 'S21_TL.eps')
 %     
-%     
-%     figure(5)
-%     plot(S11_scl{1}./1e9,S11_scl{2},'r','Linewidth',1);
-%     hold on;
-%     plot(S11_icl{1}./1e9,S11_icl{2},'Linewidth',1);
-%     grid on;
-%     xlim([1.5 1.65]);
-%     ylim([-50 0]);
-%     xlabel('Frequency [GHz]');
-%     ylabel('S11 [dB]');
-%     legend('Coupled Lines w/ Subst.','Ideal Coupled Lines');
-%     
-%     
-%     figure(6)
-%     plot(S21_scl{1}./1e9,S21_scl{2},'r','Linewidth',1);
-%     hold on;
-%     plot(S21_icl{1}./1e9,S21_icl{2},'Linewidth',1);
-%     grid on;
-%     xlim([1.5 1.7]);
-%     xlabel('Frequency [GHz]');
-%     ylabel('S21 [dB]');
-%     legend('Coupled Lines w/ Subst.','Ideal Coupled Lines');
-%     
+    
+    figure(5)
+    plot(S11_scl{1}./1e9,S11_scl{2},'r','Linewidth',1);
+    hold on;
+    plot(S11_icl{1}./1e9,S11_icl{2},'Linewidth',1);
+    grid on;
+    xlim([1.5 1.65]);
+    ylim([-50 0]);
+    xlabel('Frequency [GHz]');
+    ylabel('S11 [dB]');
+    legend('Coupled Lines w/ Subst.','Ideal Coupled Lines');
+    print('-depsc', 'S11_subst_CL.eps')
+    
+    figure(6)
+    plot(S21_scl{1}./1e9,S21_scl{2},'r','Linewidth',1);
+    hold on;
+    plot(S21_icl{1}./1e9,S21_icl{2},'Linewidth',1);
+    grid on;
+    xlim([1.5 1.7]);
+    xlabel('Frequency [GHz]');
+    ylabel('S21 [dB]');
+    legend('Coupled Lines w/ Subst.','Ideal Coupled Lines');
+    print('-depsc', 'S21_subst_CL.eps')
 %     
     figure(7)
     plot(S11_scl{1}./1e9,S11_scl{2},'Linewidth',1);
@@ -112,7 +112,7 @@
     xlabel('Frequency [GHz]');
     ylabel('S_{11} [dB]');
     legend('Coupled Lines w/ Subst.','EM-model');
-    print('-depsc', 'S11_subst_CL.eps')
+    print('-depsc', 'S11_layout.eps')
     
     figure(8)
     plot(S21_scl{1}./1e9,S21_scl{2},'Linewidth',1);
@@ -123,7 +123,7 @@
     xlabel('Frequency [GHz]');
     ylabel('S_{21} [dB]');
     legend('Coupled Lines w/ Subst.','EM-model');
-    print('-depsc', 'S21_subst_CL.eps')
+    print('-depsc', 'S21_layout.eps')
 %     
 %     figure(9)
 %     plot(S11_TL{1}./1e9,S11_TL{2},'Linewidth',1);
