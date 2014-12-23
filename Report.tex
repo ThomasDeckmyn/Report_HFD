@@ -402,8 +402,19 @@
     \label{fig:lna_meas_cp}
   \end{figure}
 
-  % TODO: Questions from TutorialRFMeasurements
-  
+  \begin{quote} \textit{\textbf{Question:} Could one measure the 1dBCP without spectrum analyzer, simply using a power meter? }\end{quote}
+
+  If one would use a power meter to measure the output power of the DUT, the measured power would consist of contributions of all harmonic frequencies, but only the power of the fundamental order is needed to calculate the 1 dBCP. Hence, the compression point would be overestimated. A solution would be to place a bandpass filter in front of the power meter to filter out only the fundamental order, but the attenuation in the passband should be precisely known. 
+
+  \begin{quote} \textit{\textbf{Question:} Could one measure the 1 dBCP using a Network Analyzer?} \end{quote}
+
+  It is theoretically possible to measure the 1 dBCP with a NA. This would consist of performing a measurement of $S_21$ for several input powers. If one knows the input power and the gain, the output power is easily calculated. One major drawback of this technique is that a recalibration of the NA is needed for every change of input power. Hence, measuring the 1 dBCP with a NA is theoretically possible, but very impractical. 
+
+  \begin{quote} \textit{\textbf{Question:} How would one measure the 1 dBCP of a mixer?} \end{quote}
+
+  To measure the 1 dBCP of a mixer, one should obtain the conversion gain, i.e. the ratio of the IF power to the RF power $\frac{P_{IF}}{P_{RF}}$. The LO power is kept constant and the RF input power is varied. Due to generated mixing products the conversion gain will be compressed. Determining the 1 dBCP is then done in the same manner as for an amplifier: a linear curve is fitted to the conversion gain and one searches for the output/input power for which the deviation from the linear curve is $\SI{1}{\decibel}$. 
+
+
   \subsubsection{Harmonic Distortion}
   The test set-up to measure the harmonic distortion consists of two signal generators: one set to $\SI{1575.40}{\mega\hertz}$ (IM-) and the other set to $\SI{1575.44}{\mega\hertz}$ (IM+).
   These inputs will create $3^{rd}$ order intermodulation products at $\SI{1575.36}{\mega\hertz}$ and $\SI{1575.48}{\mega\hertz}$.
@@ -433,6 +444,22 @@
   \subsubsection{Noise}
   To measure the noise, we choose to use the noise figure meter, as it is the most accurate for low noise figures ($\le$ $\SI{2}{\decibel}$).
   We measured a value of $\SI{1.22}{\decibel}$, which is perfectly in line with the simulation result of $\SI{1.196}{\decibel}$ in \autoref{tab:lna_summ} and even better than the EM-simulation result.
+
+  \begin{quote} \textit{\textbf{Question:} Why is the noise spectral density independant of the RBW of the analyzer? }\end{quote}
+
+  One point (one frequency) of the spectrum seen on the analyzer is the integral of the power in an interval of RBW wide. If the resolution BW of the analyzer is chosen smaller, the integral will yield a smaller value, hence the noise floor drops. As the noise spectral density is defined as the noise power per unit bandwidth, it will remain constant if the RBW changes. For example, if we consider thermal noise, we know that the thermal noise power is: 
+
+  \begin{equation}
+  	P_{N,th} = 4 * k * T * BW 
+  \end{equation}
+
+  The noise spectral density is defined as noise power per unit BW, hence: 
+
+  \begin{equation}
+  	S_{N,th} = 4 * k * T
+  \end{equation}
+
+  which is independant of the BW. 
 
   \subsubsection{Figure of merit}
   Finally we measure the power usage of the LNA: at $\SI{5}{\volt}$, a current of $\SI{13}{\milli\ampere}$ is drawn from the power supply, yielding a power consumption of $\SI{65}{\milli\watt}$.
