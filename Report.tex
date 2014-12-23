@@ -26,12 +26,10 @@
 \maketitle
 
 \tableofcontents
-
-\section{Introduction}
+\newpage
 \section{Circuit Design}
 	\subsection{LNA}
 
-	\textbf{Misschien specificaties nog eens oplijsten?}\\\\
 	The design of the LNA first requires a choice of topology. A common emittor toplogy is the best choice in this case, because it yields the highest power gain and has a moderate input and output impedance, hence it can easily be matched to a $\SI{50}{\ohm}$ system.
 		\subsubsection{DC Operating Point}
 			When determining the DC operating point for the BFP740 transistor a trade-off has to be made between minimal NF and maximum linearity. Based on the characteristics found in the datasheet \cite{transdatasheet} of the transistor we choose $V_{CE} = \SI{4}{\volt}$ and $I_C = \SI{20}{\milli\ampere}$ to obtain the highest possible linearity, i.e. $IP3 = \SI{27}{\dbm} $. For $I_C = \SI{20}{\milli\ampere}$ the NF is $\SI{0.7}{\decibel}$, which still leaves a lot of margin to stay below the specified NF of $\SI{1.5}{\decibel}$. From the datasheet we know that $\beta = 300$, which yields $I_B = \frac{I_C}{\beta} = \SI{66}{\micro\ampere}$, hence the circuit shown in Figure \ref{fig:lna_ce} can be constructed. DC blocking capacitor are added as not to interrupt the DC operating point of the transistor. The DC feed ensures DC current where needed and prevents RF current from entering the DC voltage source. \\
@@ -86,6 +84,8 @@
 
 			The next step is to replace the ideal base current source by a biasing network. This biasing network will induce negative feedback and thus ensure stability. The voltage drop over the resistor will be $V_{CE} - \SI{0.7}{\volt} = \SI{3.3}{\volt}$ and the current needs to be $\SI{66}{\micro\ampere}$, hence $R = \SI{50}{\kilo\ohm}$. After tuning for best performance, we obtain the circuit shown in Figure \ref{fig:lna_pre_layout}.
 
+				The Smith Chart in Figure \ref{fig:lna_matching_smith} shows that the input is perfectly matched to $\SI{50}{\ohm}$ after adding the matching networks from Figure \ref{fig:lna_pre_layout}. The output is on purpose mismatched to obtain a NF that is smaller than $\SI{1.5}{\decibel}$ (see \ref{sec:lna_matching}).
+
 			\begin{figure}[H]
 				\centering
 				\includegraphics[width=0.8\textwidth]{fig/LNA/LNA_matched.pdf}
@@ -93,8 +93,7 @@
 			\label{fig:lna_pre_layout}
 			\end{figure} 
 
-			The Smith Chart in Figure \ref{fig:lna_matching_smith} shows that the input is perfectly matched to $\SI{50}{\ohm}$ after adding the matching networks from Figure \ref{fig:lna_pre_layout}. The output is on purpose mismatched to obtain a NF that is smaller than $\SI{1.5}{\decibel}$ (see \ref{sec:lna_matching}).
-
+		
 			\begin{figure}[H]
 			\centering
 				\includegraphics[width=0.5\textwidth]{fig/LNA/matching_smith.pdf}
@@ -265,6 +264,8 @@
 
   	After the transformation to coupled lines, the ideal lines are substituted with microstrip lines and the substrate is added to the design. The dimensions of the coupled lines are calculated from the even and odd impedances using LineCalc. The final schematic is shown in Figure \ref{fig:filter_final_CL}. 
 
+  		The S-parameters for the coupled lines with added substrate are shown in Figure \ref{fig:filter_spar_subst_CL}. The most important change is the attenuation added in the passband due to substrate losses, as seen in Figure \ref{fig:filter_spar_subst_CL}, but with $\SI{1.3}{\decibel}$ still within the specification of $\SI{2}{\decibel}$. The bandwidth of the filter is approximately $\SI{50}{\mega\hertz}$.
+
   	\begin{figure}[H]
   		\centering
   		\includegraphics[width=0.9\textwidth]{fig/Filter/2nd_order/bandpass_subst_CL.pdf}
@@ -272,7 +273,7 @@
   		\label{fig:filter_final_CL}
   	\end{figure} 
 
-  	The S-parameters for the coupled lines with added substrate are shown in Figure \ref{fig:filter_spar_subst_CL}. The most important change is the attenuation added in the passband due to substrate losses, as seen in Figure \ref{fig:filter_spar_subst_CL}, but with $\SI{1.3}{\decibel}$ still within the specification of $\SI{2}{\decibel}$. The bandwidth of the filter is approximately $\SI{50}{\mega\hertz}$.
+  
 
   \begin{figure}[H]
   		\centering
@@ -301,7 +302,10 @@
 		\subsubsection{EM-model Simulations}
 			In this step of the design Momentum (full wave) simulations are performed on the drawn layout and an EM-model is generated. This model contains information on transmission line effects, radiation losses, copper losses etc. and can be used to conduct further simulations to better predict the performance of the fabricated device and investigate the differences with the schematic. \\
 
-			The Smith Chart in Figure \ref{fig:lna_smith_post} shows that with inclusion of the EM-model there is a very small mismatch at the input, but the $S_{11}$ is $\SI{-22}{\decibel}$ which is very much acceptable.
+			The Smith Chart in Figure \ref{fig:lna_smith_post} shows that with inclusion of the EM-model there is a very small mismatch at the input, but the $S_{11}$ is $\SI{-22}{\decibel}$ which is very much acceptable.\\
+
+			If we look at the 1-dBCP in Figure \ref{fig:lna_1db_post} we see that the input referred 1-dBCP has increased with $\SI{1}{\dbm}$, but the gain has dropped with approximately the same amount. We get an output referred 1-dBCP of $\SI{4.37}{\dbm}$, which is very close to the value obtained with the schematic ($\SI{4.5}{\dbm}$). 
+
 
 			\begin{figure}[H]
 			\centering
@@ -309,8 +313,6 @@
 			\caption{Smith Chart with EM-model}
 			\label{fig:lna_smith_post}
 			\end{figure}
-
-			If we look at the 1-dBCP in Figure \ref{fig:lna_1db_post} we see that the input referred 1-dBCP has increased with $\SI{1}{\dbm}$, but the gain has dropped with approximately the same amount. We get an output referred 1-dBCP of $\SI{4.37}{\dbm}$, which is very close to the value obtained with the schematic ($\SI{4.5}{\dbm}$). 
 
 			\begin{figure}[H]
 			\centering
@@ -357,10 +359,10 @@
 
 			\begin{figure}[H]
 			\centering
-				\begin{subfigure}{0.7\textwidth}
+				\begin{subfigure}{0.58\textwidth}
 				\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S11_layout.eps}
 				\end{subfigure}
-				\begin{subfigure}{0.7\textwidth}
+				\begin{subfigure}{0.58\textwidth}
 				\includegraphics[width=\textwidth]{fig/Filter/2nd_order/plots/S21_layout.eps}
 				\end{subfigure}
 			\caption{S-parameters for EM-model simulations}
@@ -395,7 +397,7 @@
   A curve is fitted to the initial linear part, and the vertical black line indicates the point where the difference between the fitted and measured curve exceeds $\SI{1}{\decibel}$.
   For the tested LNA, this point is at an input power of $\SI{-14}{\dbm}$ and given the gain measured in \autoref{sub:sparams}, this results in an output-referred $\SI{1}{\decibel}$ compression point of $\SI{5.45}{\dbm}$.
 
-  \begin{figure}[H]
+  \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{fig/LNA/compression_lna.eps}
     \caption{Output vs. Input Power}
@@ -421,7 +423,7 @@
   The output power at these four frequencies is then measured for varying input powers, and the lowside and highside measurements are shown in \autoref{fig:lna_meas_im_low} and \autoref{fig:lna_meas_im_high} respectively.
   Once again, lines are fitted to the linear section of the measurements (i.e.\ for input powers \textless $\SI{-14}{\dbm}$).
 
-  \begin{figure}[H]
+  \begin{figure}
     \centering
     \begin{subfigure}{0.5\textwidth}
       \centering
