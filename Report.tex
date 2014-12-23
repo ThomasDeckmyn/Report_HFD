@@ -445,6 +445,8 @@
   To measure the noise, we choose to use the noise figure meter, as it is the most accurate for low noise figures ($\le$ $\SI{2}{\decibel}$).
   We measured a value of $\SI{1.22}{\decibel}$, which is perfectly in line with the simulation result of $\SI{1.196}{\decibel}$ in \autoref{tab:lna_summ} and even better than the EM-simulation result.
 
+  \subsubsection{Noise: Gain Method}
+
   \begin{quote} \textit{\textbf{Question:} Why is the noise spectral density independant of the RBW of the analyzer? }\end{quote}
 
   One point (one frequency) of the spectrum seen on the analyzer is the integral of the power in an interval of RBW wide. If the resolution BW of the analyzer is chosen smaller, the integral will yield a smaller value, hence the noise floor drops. As the noise spectral density is defined as the noise power per unit bandwidth, it will remain constant if the RBW changes. For example, if we consider thermal noise, we know that the thermal noise power is: 
@@ -460,6 +462,15 @@
   \end{equation}
 
   Which is independent of the BW. 
+
+  \begin{quote} \textit{\textbf{Question:} Could you estimate the measurement error caused by neglecting the noise of the preamplifier for the example presented above? }\end{quote}
+
+
+
+  \begin{quote} \textit{\textbf{Question:} On an oscilloscope one can use the averaging function to remove the noise on a waveform. Does the averaging function on a spectrum analyzer work in the same way? }\end{quote}
+
+  When averaging on a spectrum analyzer, one averages the power of the signal over frequency. The noise power ofcourse has some fluctuations as a function of frequency, which can be seen as noise on the noise component. When averaging on the analyzer, the noise on the noise will be averaged out, but the noise level will not decrease. This causes the noise to be flat over frequency and hence all frequencies get the same noise contribution. On the oscilloscope however, the averaging is in the time domain, which yields low pass behavior. The noise power at higher frequencies is decreased. 
+
 
   \subsubsection{Figure of merit}
   Finally we measure the power usage of the LNA: at $\SI{5}{\volt}$, a current of $\SI{13}{\milli\ampere}$ is drawn from the power supply, yielding a power consumption of $\SI{65}{\milli\watt}$.
