@@ -408,7 +408,7 @@
 
   \begin{quote} \textit{\textbf{Question:} Could one measure the 1 dBCP using a Network Analyzer?} \end{quote}
 
-  It is theoretically possible to measure the 1 dBCP with a NA. This would consist of performing a measurement of $S_21$ for several input powers. If one knows the input power and the gain, the output power is easily calculated. One major drawback of this technique is that a recalibration of the NA is needed for every change of input power. Hence, measuring the 1 dBCP with a NA is theoretically possible, but very impractical. 
+    It is theoretically possible to measure the 1 dBCP with a NA. This would consist of performing a measurement of $S_{21}$ for several input powers. If one knows the input power and the gain, the output power is easily calculated. One major drawback of this technique is that a recalibration of the NA is needed for every change of input power. Hence, measuring the 1 dBCP with a NA is theoretically possible, but very impractical. 
 
   \begin{quote} \textit{\textbf{Question:} How would one measure the 1 dBCP of a mixer?} \end{quote}
 
@@ -450,16 +450,16 @@
   One point (one frequency) of the spectrum seen on the analyzer is the integral of the power in an interval of RBW wide. If the resolution BW of the analyzer is chosen smaller, the integral will yield a smaller value, hence the noise floor drops. As the noise spectral density is defined as the noise power per unit bandwidth, it will remain constant if the RBW changes. For example, if we consider thermal noise, we know that the thermal noise power is: 
 
   \begin{equation}
-  	P_{N,th} = 4 * k * T * BW 
+  	P_{N,th} = 4 k T BW 
   \end{equation}
 
   The noise spectral density is defined as noise power per unit BW, hence: 
 
   \begin{equation}
-  	S_{N,th} = 4 * k * T
+  	S_{N,th} = 4 k T
   \end{equation}
 
-  which is independant of the BW. 
+  Which is independent of the BW. 
 
   \subsubsection{Figure of merit}
   Finally we measure the power usage of the LNA: at $\SI{5}{\volt}$, a current of $\SI{13}{\milli\ampere}$ is drawn from the power supply, yielding a power consumption of $\SI{65}{\milli\watt}$.
